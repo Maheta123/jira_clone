@@ -1,0 +1,46 @@
+
+
+In backend 
+        // for future encryption of password // We are using hashing 
+        npm install bcrypt
+        
+        //for task board dragging
+        ng add @angular/cdk   
+
+        // For ticke rising in Admin 
+        npm install morgan  
+
+
+
+Forget password page is pending
+
+In Master admin:
+     Done: Main Dashboard:
+                Recent Platform Activity
+     Done: Active Login
+     Done: Bill Download and view button updation is pending 
+    
+     --------------------------
+        Platform Analytics
+     --------------------------
+
+In admin:
+        Done: Projects page 
+                // 6955fc52e20a64470d58813d,6963b2547305
+                // we have to display the name instead of id
+
+        Payment page for suscribition is pending 
+
+in Developer:
+        on my bugs page
+          half Done: big id is pending
+            show task key if present else show last 8 digit of mongo id
+
+
+In Project Manager:
+        half Done: re assigning task is pending
+          Edit Task new page or some wahare in any pages
+                // SO manager can re allocate task if needed
+
+
+In QA: Completed
