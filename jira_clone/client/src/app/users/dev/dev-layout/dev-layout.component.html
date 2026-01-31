@@ -1,0 +1,49 @@
+<!-- src/app/users/dev/dev-layout/dev-layout.component.html -->
+<div class="dev-layout">
+  <!-- Fixed Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Developer Portal</h2>
+      <div class="user-info" *ngIf="currentUserName">
+         <a [routerLink]="['/profile']">
+        <div
+          class="user-avatar"
+          *ngIf="currentUserName"
+          title="{{ currentUserName }}"
+        >
+          {{ currentUserName}}
+        </div>
+        </a>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li>
+          <a routerLink="/dev/dashboard" routerLinkActive="active">
+            <i class="icon-dashboard"></i> My Dashboard
+          </a>
+        </li>
+        <li>
+          <a routerLink="/dev/my-bugs" routerLinkActive="active">
+            <i class="icon-bugs"></i> My Bugs
+          </a>
+        </li>
+        <!-- Add more menu items later if needed -->
+        <!-- <li><a routerLink="/dev/tasks">Assigned Tasks</a></li> -->
+        <!-- <li><a routerLink="/dev/pull-requests">Pull Requests</a></li> -->
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <i class="icon-logout"></i> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

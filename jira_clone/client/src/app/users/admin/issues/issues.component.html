@@ -1,0 +1,84 @@
+<div class="page-container">
+  <h1>All Issues</h1>
+  <p class="subtitle">Complete list of issues across all projects</p>
+
+  <div class="loading" *ngIf="loading">Loading issues...</div>
+  <div class="error" *ngIf="error">{{ error }}</div>
+
+  <table class="data-table" *ngIf="!loading && !error && issues.length > 0">
+    <thead>
+      <tr>
+        <th>Issue ID</th>
+        <th>Title</th>
+        <th>Project</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>Assignee</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let issue of issues">
+        <td>{{ issue.id }}</td>
+        <td>{{ issue.title }}</td>
+        <td>{{ issue.project }}</td>
+        <td>
+          <span class="status {{ issue.status }}">{{ formatStatus(issue.status) }}</span>
+        </td>
+        <td>
+          <span class="priority {{ issue.priority | lowercase }}">{{ issue.priority }}</span>
+        </td>
+        <td>{{ issue.assignee }}</td>
+        <td>
+          <button class="edit-btn" (click)="openEditModal(issue)">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="no-data" *ngIf="!loading && !error && issues.length === 0">
+    No issues found.
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="modal" *ngIf="showEditModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2>Edit Issue {{ editingIssue?.id }}</h2>
+      <form (ngSubmit)="saveChanges()">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" [(ngModel)]="editForm.title" name="title" required />
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select [(ngModel)]="editForm.status" name="status">
+            <option *ngFor="let s of statuses" [value]="s.value">{{ s.label }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Priority</label>
+          <select [(ngModel)]="editForm.priority" name="priority">
+            <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Developer</label>
+          <input type="text" [(ngModel)]="editForm.developerName" name="developerName" placeholder="Developer name" />
+        </div>
+
+        <div class="form-group">
+          <label>QA</label>
+          <input type="text" [(ngModel)]="editForm.qaName" name="qaName" placeholder="QA name" />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="cancel-btn" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="save-btn">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

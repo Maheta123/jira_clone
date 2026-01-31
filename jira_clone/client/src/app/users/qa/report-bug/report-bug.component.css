@@ -1,0 +1,453 @@
+.report-bug-container {
+  padding: 2rem 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #f5f9ff;
+  min-height: 100vh;
+  position: relative;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.page-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #0d47a1;
+  margin: 0 0 0.8rem 0;
+}
+
+.page-subtitle {
+  font-size: 1.2rem;
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Table Section */
+.table-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.8rem;
+}
+
+.section-title {
+  font-size: 1.9rem;
+  color: #0d47a1;
+  font-weight: 600;
+  margin: 0;
+}
+
+.new-bug-btn {
+  padding: 0.85rem 1.8rem;
+  font-size: 1.05rem;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.35);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.new-bug-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+}
+
+.table-container {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.bugs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bugs-table th {
+  background: #f8f9fa;
+  text-align: left;
+  padding: 1.3rem 1.6rem;
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+.bugs-table td {
+  padding: 1.5rem 1.6rem;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.bug-id {
+  font-family: monospace;
+  font-weight: 600;
+  color: #0d47a1;
+  font-size: 1.05rem;
+}
+
+.bug-title {
+  font-weight: 500;
+  color: #333;
+  max-width: 500px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3.5rem;
+  color: #888;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+.severity-badge, .status-badge {
+  padding: 0.5rem 1.1rem;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.severity-badge.low { background: #e0e0e0; color: #424242; }
+.severity-badge.medium { background: #fff3e0; color: #ef6c00; }
+.severity-badge.high { background: #ffebee; color: #c62828; }
+.severity-badge.critical { background: #f3e5f5; color: #7b1fa2; }
+
+.status-badge.open { background: #e8f5e9; color: #2e7d32; }
+.status-badge.in-progress { background: #e3f2fd; color: #1976d2; }
+.status-badge.resolved { background: #f3e5f5; color: #7b1fa2; }
+.status-badge.closed { background: #e0e0e0; color: #424242; }
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.action-btn {
+  background: #f8fbff;
+  border: 1px solid #e0e7ff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: #666;
+}
+
+.action-btn:hover {
+  background: #e3f2fd;
+  transform: scale(1.12);
+  color: #1976d2;
+}
+
+.action-btn.danger:hover {
+  background: #ffebee;
+  border-color: #c62828;
+  color: #c62828;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-form-card {
+  background: white;
+  border-radius: 28px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 92vh;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: modalEnter 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+}
+
+/* Floating Close Button */
+.modal-close-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: #f0f4ff;
+  border: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #555;
+  font-size: 30px;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modal-close-btn:hover {
+  background: #e0e7ff;
+  color: #0d47a1;
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  padding: 3rem 3rem 0 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-title {
+  font-size: 2.2rem;
+  color: #0d47a1;
+  margin: 0;
+  font-weight: 700;
+}
+
+.form-content {
+  padding: 0 3rem 2rem;
+  max-height: calc(92vh - 220px);
+  overflow-y: auto;
+}
+
+.form-group {
+  margin-bottom: 2.2rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2.2rem;
+}
+
+.form-group.half {
+  flex: 1;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.8rem;
+  font-size: 1.05rem;
+}
+
+.required {
+  color: #d32f2f;
+}
+
+.form-control {
+  width: 100%;
+  padding: 1.2rem 1.5rem;
+  border: 2px solid #e0e7ff;
+  border-radius: 16px;
+  font-size: 1.05rem;
+  background: #f8fbff;
+  transition: all 0.3s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #1976d2;
+  background: white;
+  box-shadow: 0 0 0 6px rgba(25, 118, 210, 0.18);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 130px;
+  font-family: inherit;
+}
+
+.form-actions {
+  padding: 2.5rem 3rem;
+  background: #f8fbff;
+  border-top: 1px solid #e0e7ff;
+  margin: 0 -3rem -3rem -3rem;
+  border-radius: 0 0 28px 28px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+}
+
+.btn-outline, .btn-primary {
+  padding: 1.1rem 2.4rem;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #1976d2;
+  border: 2px solid #1976d2;
+}
+
+.btn-outline:hover {
+  background: #1976d2;
+  color: white;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+  color: white;
+  border: none;
+  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.45);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.success-message {
+  text-align: center;
+  padding: 2.5rem 3rem;
+  background: #e8f5e9;
+  border-radius: 18px;
+  color: #2e7d32;
+  margin: 0 3rem 3rem;
+  border: 1px solid #c8e6c9;
+}
+
+.success-message i {
+  font-size: 60px;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .report-bug-container {
+    padding: 1.5rem;
+  }
+
+  .modal-form-card {
+    width: 96%;
+    border-radius: 24px;
+  }
+
+  .modal-close-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 26px;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .form-content, .form-actions {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn-primary, .btn-outline {
+    width: 100%;
+  }
+}
+/* Filters Bar */
+.filters-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: #0d47a1;
+  margin-bottom: 0.6rem;
+}
+
+.filter-select {
+  padding: 0.9rem 1.2rem;
+  border: 2px solid #e0e7ff;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.15);
+}
+
+/* Make sure empty state looks nice */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #f8f9fa;
+  border-radius: 16px;
+  color: #555;
+  font-size: 1.15rem;
+  margin: 2rem 0;
+}
+
+.empty-state p {
+  margin: 0.8rem 0;
+}

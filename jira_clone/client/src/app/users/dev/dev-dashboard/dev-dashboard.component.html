@@ -1,0 +1,113 @@
+<!-- src/app/users/dev/dev-dashboard/dev-dashboard.component.html -->
+<div class="dev-container">
+  <div class="header">
+    <h1>Developer Dashboard</h1>
+    <p class="subtitle">Welcome back, {{ currentUserName }}! Here's your work overview</p>
+  </div>
+
+  <div class="loading" *ngIf="loading">Loading your dashboard...</div>
+  <div class="error-message" *ngIf="error">{{ error }}</div>
+
+  <ng-container *ngIf="!loading && !error">
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>My Open Tasks</h3>
+        <p class="stat-value">{{ stats.myOpenTasks }}</p>
+      </div>
+      <div class="stat-card red">
+        <h3>Open Bugs / Fixes</h3>
+        <p class="stat-value">{{ stats.openBugs }}</p>
+      </div>
+      <div class="stat-card orange">
+        <h3>In Progress</h3>
+        <p class="stat-value">{{ stats.inProgressTasks }}</p>
+      </div>
+      <div class="stat-card green">
+        <h3>Completed This Week</h3>
+        <p class="stat-value">{{ stats.completedThisWeek }}</p>
+      </div>
+    </div>
+
+    <!-- Assigned Tasks Table – unchanged -->
+    <div class="section">
+      <h2>My Assigned Tasks ({{ assignedTasks.length }})</h2>
+
+      <table class="data-table" *ngIf="assignedTasks.length > 0; else noTasks">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Project</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of assignedTasks">
+            <td><strong>{{ task.id }}</strong></td>
+            <td>{{ task.title }}</td>
+            <td>{{ task.project }}</td>
+            <td>
+              <span class="priority-badge priority-{{ task.priority.toLowerCase() }}">
+                {{ task.priority }}
+              </span>
+            </td>
+            <td>
+              <span class="status-badge status-{{ task.status.toLowerCase().replace(' ', '-') }}">
+                {{ task.status }}
+              </span>
+            </td>
+            <td>
+              <button class="btn-action"
+                      [disabled]="task.status === 'Completed'"
+                      (click)="startWork(task)">
+                {{ task.status === 'In Progress' ? 'Continue' : 'Start Work' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ng-template #noTasks>
+        <div class="empty-state">
+          <p>No tasks assigned to you right now. Take a break — you've earned it! ☕</p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Recent Activity Table -->
+    <div class="section">
+      <h2>Recent Activity ({{ recentActivities.length }})</h2>
+
+      <table class="data-table" *ngIf="recentActivities.length > 0; else noActivity">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Task</th>
+            <th>Action</th>
+            <th>Date</th>
+            <th>When</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let act of recentActivities">
+            <td>{{ act.taskKey }}</td>
+            <td>{{ act.title }}</td>
+            <td><strong>{{ act.action }}</strong></td>
+            <td>{{ act.date }}</td>
+            <td>{{ act.timeAgo }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ng-template #noActivity>
+        <div class="empty-state">
+          <p>No recent activity detected in the last 14 days.</p>
+          <p>When you mark tasks as done, they will appear here.</p>
+        </div>
+      </ng-template>
+    </div>
+  </ng-container>
+</div>

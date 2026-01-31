@@ -1,0 +1,84 @@
+<br><br><br><br>
+<div class="login-container">
+  <div class="login-card">
+    <h1>Welcome Back</h1>
+    <p class="subtitle">Sign in to your workspace</p>
+
+    <form 
+      class="login-form" 
+      (ngSubmit)="onSubmit(loginForm)" 
+      #loginForm="ngForm"
+      novalidate>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          id="email"
+          name="email"
+          type="email"
+          [(ngModel)]="credentials.email"
+          required
+          email
+          #emailCtrl="ngModel"
+          placeholder="your.name@company.com" />
+        <span class="field-error" *ngIf="emailCtrl.touched && emailCtrl.invalid">
+          Please enter a valid email
+        </span>
+      </div>
+
+      <!-- Company Code -->
+      <div class="form-group">
+        <label for="companyCode">Company Code</label>
+        <input 
+          id="companyCode"
+          name="companyCode"
+          type="text"
+          [(ngModel)]="credentials.companyCode"
+          required
+          minlength="4"
+          maxlength="12"
+          #codeCtrl="ngModel"
+          placeholder="e.g. ACME2025" />
+        <span class="field-error" *ngIf="codeCtrl.touched && codeCtrl.invalid">
+          Company code is required (4-12 characters)
+        </span>
+        <small class="hint">Ask your admin if you don't know your company code</small>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          id="password"
+          name="password"
+          type="password"
+          [(ngModel)]="credentials.password"
+          required
+          minlength="8"
+          #passCtrl="ngModel" />
+        <span class="field-error" *ngIf="passCtrl.touched && passCtrl.invalid">
+          Password must be at least 8 characters
+        </span>
+      </div>
+
+      <div class="form-options">
+        <a routerLink="/forgot-password" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
+      <button 
+        type="submit" 
+        class="btn-login"
+        [disabled]="isLoading || loginForm.invalid">
+        <span *ngIf="isLoading">Signing in...</span>
+        <span *ngIf="!isLoading">Sign In</span>
+      </button>
+
+      <p class="signup-link">
+        Don't have an account? <a routerLink="/register">Create one</a>
+      </p>
+    </form>
+  </div>
+</div>

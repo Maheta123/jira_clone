@@ -1,0 +1,153 @@
+/* src/app/users/dev/dev-dashboard/dev-dashboard.component.css */
+.dev-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  color: #172b4d;
+  font-size: 2.4rem;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #5e6c84;
+  font-size: 1.2rem;
+  margin-bottom: 50px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  margin-bottom: 50px;
+}
+
+.stat-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-card.red { border-left: 6px solid #de350b; }
+.stat-card.green { border-left: 6px solid #006644; }
+
+.stat-card h3 {
+  color: #5e6c84;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 3.2rem;
+  font-weight: bold;
+  color: #0052cc;
+  margin: 0;
+}
+
+.section {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 40px;
+}
+
+.section h2 {
+  color: #172b4d;
+  font-size: 1.6rem;
+  border-bottom: 3px solid #0052cc;
+  padding-bottom: 12px;
+  margin-bottom: 25px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  background: #0052cc;
+  color: white;
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.data-table td {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.data-table tr:hover {
+  background-color: #f0f5ff;
+}
+
+.priority-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.priority-high { background: #fff0b3; color: #7a5d00; }
+.priority-critical { background: #ffebe6; color: #de350b; }
+.priority-medium { background: #deebff; color: #0747a6; }
+
+.btn-action {
+  background: #006644;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-action:hover {
+  background: #004d33;
+}
+
+.commit-list {
+  list-style: none;
+  padding: 0;
+}
+
+.commit-list li {
+  padding: 18px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.commit-msg {
+  flex: 1;
+  font-weight: 500;
+  color: #172b4d;
+}
+
+.commit-branch {
+  color: #0052cc;
+  font-weight: 600;
+  margin: 0 20px;
+}
+
+.commit-time {
+  color: #5e6c84;
+  font-size: 0.9rem;
+}

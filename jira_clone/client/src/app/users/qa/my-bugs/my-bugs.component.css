@@ -1,0 +1,253 @@
+.qa-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  color: #172b4d;
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #5e6c84;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  background-color: #0052cc;
+  color: white;
+  padding: 14px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.data-table tr:hover {
+  background-color: #f0f5ff;
+}
+
+.bug-id {
+  font-family: monospace;
+  font-weight: bold;
+  color: #0052cc;
+  white-space: nowrap;
+  width: 100px;
+}
+
+.bug-title {
+  max-width: 350px;
+  white-space: normal;
+  word-wrap: break-word;
+  font-weight: 500;
+  color: #172b4d;
+}
+
+.project-cell, .assignee-cell, .reported-cell, .resolved-cell {
+  white-space: nowrap;
+  width: 150px;
+}
+
+.severity-cell, .status-cell {
+  white-space: nowrap;
+  width: 140px;
+}
+
+.action-cell {
+  white-space: nowrap;
+  width: 280px;
+}
+
+.severity-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.severity-critical { background: #ffebe6; color: #de350b; }
+.severity-high { background: #fff0b3; color: #7a5d00; }
+.severity-medium { background: #deebff; color: #0747a6; }
+.severity-low { background: #e3fcef; color: #006644; }
+
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 16px;
+  background: #f4f5f7;
+  color: #505f79;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.btn-retest, .btn-pass, .btn-reopen, .btn-view {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  min-width: 70px;
+  white-space: nowrap;
+}
+
+.btn-retest { background: #0052cc; color: white; }
+.btn-pass { background: #006644; color: white; }
+.btn-reopen { background: #de350b; color: white; }
+.btn-view { background: #6c757d; color: white; }
+
+.btn-retest:hover { background: #003d99; }
+.btn-pass:hover { background: #004d33; }
+.btn-reopen:hover { background: #b32d0a; }
+.btn-view:hover { background: #5a6268; }
+
+@media (max-width: 1440px) {
+  .bug-title {
+    max-width: 250px;
+  }
+  
+  .action-buttons button {
+    padding: 7px 10px;
+    font-size: 0.8rem;
+    min-width: 60px;
+  }
+  
+  .action-buttons {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .qa-container {
+    padding: 15px;
+  }
+  
+  .data-table th, .data-table td {
+    padding: 12px 8px;
+  }
+}
+
+.no-bugs {
+  text-align: center;
+  padding: 60px 20px;
+  color: #5e6c84;
+  font-size: 1.2rem;
+}
+
+.loading, .error {
+  padding: 2rem;
+  text-align: center;
+  color: #555;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.cancel-btn {
+  background: #dfe3e6;
+  color: #172b4d;
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background: #c4c9cc;
+}
+
+.save-btn {
+  background: #0052cc;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background: #003eab;
+}
+
+.comments-text {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background: #f4f5f7;
+  padding: 1rem;
+  border-radius: 4px;
+  max-height: 400px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  color: #172b4d;
+}

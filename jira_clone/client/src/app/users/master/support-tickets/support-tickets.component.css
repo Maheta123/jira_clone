@@ -1,0 +1,422 @@
+/* src/app/users/master-admin/support-tickets/support-tickets.component.css */
+
+/* ===================== Layout ===================== */
+.support-tickets-container {
+  padding: 2.5rem 3rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #f5f9ff 0%, #eef2ff 100%);
+  min-height: 100vh;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.page-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #0d47a1, #1976d2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.page-subtitle {
+  font-size: 1.3rem;
+  color: #555;
+}
+
+/* ===================== Stats ===================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.stat-card {
+  background: white;
+  padding: 35px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+}
+
+.stat-card.red {
+  border-left: 6px solid #de350b;
+}
+
+.stat-card.critical {
+  border-left: 6px solid #c62828;
+}
+
+.stat-card.green {
+  border-left: 6px solid #006644;
+}
+
+.stat-value {
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: #0d47a1;
+  margin: 15px 0;
+}
+
+/* ===================== Filters ===================== */
+.filters-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  max-width: 600px;
+}
+
+.search-box i {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  font-size: 22px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 18px 18px 18px 60px;
+  border: 2px solid #e3f2fd;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 0 6px rgba(25, 118, 210, 0.15);
+}
+
+.filter-group {
+  display: flex;
+  gap: 15px;
+}
+
+.filter-select {
+  padding: 16px 24px;
+  border: 2px solid #e3f2fd;
+  border-radius: 50px;
+  background: white;
+  font-size: 1rem;
+  min-width: 180px;
+  cursor: pointer;
+}
+
+/* ===================== Table ===================== */
+.table-container {
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.tickets-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tickets-table th {
+  background: linear-gradient(135deg, #f8fbff, #e3f2fd);
+  padding: 20px 25px;
+  text-align: left;
+  font-weight: 600;
+  color: #1565c0;
+  border-bottom: 3px solid #bbdefb;
+}
+
+.tickets-table td {
+  padding: 25px;
+  border-bottom: 1px solid #eef2ff;
+  vertical-align: middle;
+}
+
+.tickets-table tr:hover {
+  background: #f8fbff;
+}
+
+.tickets-table tr.resolved {
+  background: #f8fff8;
+  opacity: 0.85;
+}
+
+/* Ensure actions column never collapses */
+.tickets-table th:last-child,
+.tickets-table td:last-child {
+  min-width: 210px;
+  white-space: nowrap;
+}
+
+/* ===================== Cells ===================== */
+.ticket-id {
+  font-family: monospace;
+  font-weight: bold;
+  color: #0052cc;
+  font-size: 1.1rem;
+}
+
+.ticket-title {
+  font-weight: 600;
+  color: #1a237e;
+  max-width: 400px;
+}
+
+/* ===================== Badges ===================== */
+.priority-badge,
+.status-badge {
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+}
+
+.priority-low {
+  background: #e8eaf6;
+  color: #3f51b5;
+}
+
+.priority-medium {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.priority-high {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.priority-critical {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.status-open {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.status-in-progress {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.status-resolved {
+  background: #e8f5e9;
+  color: #006644;
+}
+
+.status-closed {
+  background: #e0e0e0;
+  color: #616161;
+}
+
+/* ===================== Actions ===================== */
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.action-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #f8fbff;
+  border: 2px solid #e3f2fd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.action-btn i {
+  font-size: 1.4rem;
+  transition: transform 0.3s ease;
+}
+
+.action-btn:hover {
+  background: #e3f2fd;
+  border-color: #1976d2;
+  color: #1976d2;
+}
+
+.action-btn:hover i {
+  transform: scale(1.25);
+}
+
+/* ===================== Empty State ===================== */
+.empty-state {
+  text-align: center;
+  padding: 80px 40px;
+  color: #888;
+}
+
+.empty-state i {
+  font-size: 100px;
+  color: #ddd;
+  margin-bottom: 20px;
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 992px) {
+  .filters-bar {
+    flex-direction: column;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .filter-select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .support-tickets-container {
+    padding: 1.5rem;
+  }
+
+  .tickets-table th,
+  .tickets-table td {
+    padding: 15px;
+  }
+
+  .tickets-table th:last-child,
+  .tickets-table td:last-child {
+    min-width: 180px;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+}
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+  padding: 20px 30px;
+  border-bottom: 1px solid #e3f2fd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #0d47a1;
+}
+
+.ticket-id-modal {
+  font-size: 1.1rem;
+  color: #555;
+  margin-left: 12px;
+  font-family: monospace;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #666;
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 30px;
+}
+
+.modal-body p {
+  margin: 12px 0;
+  font-size: 1.1rem;
+}
+
+.modal-body strong {
+  color: #0d47a1;
+}
+
+.status-select {
+  width: 100%;
+  padding: 14px;
+  font-size: 1.1rem;
+  border: 2px solid #e3f2fd;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+
+.btn-cancel, .btn-save {
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-cancel {
+  background: #f5f5f5;
+  color: #555;
+}
+
+.btn-save {
+  background: #1976d2;
+  color: white;
+}

@@ -1,0 +1,115 @@
+<div class="master-layout">
+  <header class="master-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <h1>
+          JIRA Clone
+          <span class="master-badge">MASTER ADMIN</span>
+        </h1>
+      </div>
+
+      <div class="header-actions">
+        <!-- User info - only name in welcome -->
+        <div class="user-welcome">
+          <span class="welcome-text">
+            Welcome, <strong>{{ userName }}</strong>
+          </span>
+        </div>
+
+        <!-- Avatar with initials -->
+         <a [routerLink]="['/profile']">
+        <div
+          class="user-avatar"
+          *ngIf="currentUser"
+          title="{{ userName }}"
+        >
+          {{ getInitials(userName) }}
+        </div>
+        </a>
+
+        <!-- Logout button -->
+        <button
+          class="logout-btn"
+          (click)="logout()"
+          title="Sign out"
+        >
+          <i class="material-icons">logout</i>
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout-body">
+    <aside class="master-sidebar">
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <a routerLink="/master/dashboard" routerLinkActive="active">
+              <i class="material-icons">dashboard</i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="/master/organizations" routerLinkActive="active">
+              <i class="material-icons">apartment</i>
+              <span>Organizations</span>
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="/master/users" routerLinkActive="active">
+              <i class="material-icons">supervisor_account</i>
+              <span>Global Users</span>
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="/master/plans" routerLinkActive="active">
+              <i class="material-icons">featured_play_list</i>
+              <span>Subscription Plans</span>
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="/master/finance" routerLinkActive="active">
+              <i class="material-icons">account_balance_wallet</i>
+              <span>Finance & Billing</span>
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="/master/analytics" routerLinkActive="active">
+              <i class="material-icons">analytics</i>
+              <span>Platform Analytics</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/master/connect" routerLinkActive="active">
+              <i class="material-icons">extension</i>
+              <span> Connect</span>
+            </a>
+          </li> 
+          <li>
+            <a routerLink="/master/activity" routerLinkActive="active">
+              <i class="material-icons">history</i>
+              <span>Activity Logs</span>
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="/master/support" routerLinkActive="active">
+              <i class="material-icons">confirmation_number</i>
+              <span>Support Tickets</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="master-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,108 @@
+<div class="test-execution-container">
+  <div class="page-header">
+    <h1 class="page-title">Test Execution</h1>
+    <p class="page-subtitle">Run your assigned test cases and report results</p>
+  </div>
+
+  <div class="stats-grid" *ngIf="!loading; else loadingBlock">
+    <div class="stat-card">
+      <h3>Total Tests</h3>
+      <p class="stat-value">{{ totalTests }}</p>
+    </div>
+    <div class="stat-card green">
+      <h3>Passed</h3>
+      <p class="stat-value">{{ passedCount }}</p>
+    </div>
+    <div class="stat-card red">
+      <h3>Failed</h3>
+      <p class="stat-value">{{ failedCount }}</p>
+    </div>
+    <div class="stat-card orange">
+      <h3>Blocked</h3>
+      <p class="stat-value">{{ blockedCount }}</p>
+    </div>
+    <div class="stat-card">
+      <h3>Not Run</h3>
+      <p class="stat-value">{{ notRunCount }}</p>
+    </div>
+  </div>
+
+  <ng-template #loadingBlock>
+    <div class="loading">Loading assigned test cases...</div>
+  </ng-template>
+
+  <div class="error-message" *ngIf="error">{{ error }}</div>
+
+  <div class="test-cases-section" *ngIf="!loading && !error">
+    <h2 class="section-title">Assigned Test Cases</h2>
+
+    <div class="test-cases-list">
+      <div class="test-case-card" *ngFor="let test of testCases" [class.executed]="test.status !== 'Not Run'">
+        <div class="test-header">
+          <div class="test-info">
+            
+            <h3 class="test-id">{{ test.taskKey || test.id }}</h3>
+            <h4 class="test-title">{{ test.title }}</h4>
+          </div>
+          <div class="test-status">
+            <span class="status-badge" [ngClass]="'status-' + getStatusClass(test.status)">
+              {{ test.status }}
+            </span>
+            <span class="priority-badge" [ngClass]="'priority-' + (test.priority | lowercase)">
+              {{ test.priority }}
+            </span>
+          </div>
+        </div>
+
+        <div class="test-actions" *ngIf="test.status === 'Not Run'">
+          <button class="btn-run" (click)="viewDetails(test)">Run Test</button>
+        </div>
+
+        <div class="test-executed-info" *ngIf="test.status !== 'Not Run'">
+          <small>
+            Executed by {{ test.lastExecutedBy || 'You' }} on {{ test.lastExecutedOn | date:'mediumDate' }}
+          </small>
+          <p *ngIf="test.notes" class="test-notes">
+            <strong>Notes / Failure reason:</strong> {{ test.notes }}
+          </p>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="testCases.length === 0">
+        <p>No test cases assigned to you at the moment.</p>
+        <p>Check back later or ask your test lead to assign some.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Test Details / Execution Modal -->
+  <div class="modal-overlay" *ngIf="selectedTest" (click)="closeDetails()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <button class="modal-close-btn" (click)="closeDetails()">✕</button>
+
+      <div class="modal-header">
+        <h2>{{ selectedTest.taskKey || selectedTest.id }} — {{ selectedTest.title }}</h2>
+        <span class="priority-label">Priority: {{ selectedTest.priority }}</span>
+      </div>
+
+      <div class="modal-body">
+        <div class="test-details">
+          <h4>Expected Result</h4>
+          <p>{{ selectedTest.expectedResult }}</p>
+
+          <h4>Test Steps</h4>
+          <ol class="steps-list">
+            <li *ngFor="let step of selectedTest.steps">{{ step }}</li>
+          </ol>
+        </div>
+
+        <div class="execution-actions">
+          <button class="btn-pass" (click)="executeTest('Pass')">Pass</button>
+          <button class="btn-fail" (click)="executeTest('Fail')">Fail</button>
+          <button class="btn-blocked" (click)="executeTest('Blocked')">Blocked</button>
+          <button class="btn-cancel" (click)="closeDetails()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

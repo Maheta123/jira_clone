@@ -1,0 +1,178 @@
+<!-- src/app/users/master-admin/support-tickets/support-tickets.component.html -->
+<div class="support-tickets-container">
+  <div class="page-header">
+    <h1 class="page-title">Support Tickets</h1>
+    <p class="page-subtitle">Monitor and manage customer support requests across all organizations</p>
+  </div>
+
+  <!-- Loading / Error State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading tickets...</p>
+  </div>
+
+  <div class="error-message" *ngIf="errorMessage && !isLoading">
+    <p>{{ errorMessage }}</p>
+    <button (click)="loadTickets()" class="retry-btn">Try Again</button>
+  </div>
+
+  <!-- Main content -->
+  <div *ngIf="!isLoading && !errorMessage">
+    <!-- Stats Summary -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total Tickets</h3>
+        <p class="stat-value">{{ totalTickets }}</p>
+      </div>
+      <div class="stat-card red">
+        <h3>Open Tickets</h3>
+        <p class="stat-value">{{ openTickets }}</p>
+      </div>
+      <div class="stat-card critical">
+        <h3>Critical Priority</h3>
+        <p class="stat-value">{{ criticalTickets }}</p>
+      </div>
+      <div class="stat-card green">
+        <h3>Resolved Today</h3>
+        <p class="stat-value">{{ resolvedToday }}</p>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+      <div class="search-box">
+        <i class="material-icons">search</i>
+        <input 
+          type="text" 
+          placeholder="Search by ticket ID, title, user, or organization..." 
+          [(ngModel)]="searchTerm"
+          (input)="filterTickets()" />
+      </div>
+
+      <div class="filter-group">
+        <select [(ngModel)]="selectedPriority" (change)="filterTickets()" class="filter-select">
+          <option value="All">All Priorities</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+          <option value="Critical">Critical</option>
+        </select>
+
+        <select [(ngModel)]="selectedStatus" (change)="filterTickets()" class="filter-select">
+          <option value="All">All Status</option>
+          <option value="Open">Open</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Resolved">Resolved</option>
+          <option value="Closed">Closed</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Tickets Table -->
+    <div class="table-container">
+      <table class="tickets-table" *ngIf="filteredTickets.length > 0; else emptyState">
+        <thead>
+          <tr>
+            <th>Ticket ID</th>
+            <th>Title</th>
+            <th>Organization</th>
+            <th>User</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Category</th>
+            <th>Submitted</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ticket of filteredTickets" [class.resolved]="ticket.status === 'Resolved' || ticket.status === 'Closed'">
+            <td class="ticket-id">{{ ticket.id }}</td>
+            <td class="ticket-title">
+              <strong>{{ ticket.title }}</strong>
+            </td>
+            <td>{{ ticket.organization }}</td>
+            <td>{{ ticket.user }}</td>
+            <td>
+              <span class="priority-badge" [ngClass]="getPriorityClass(ticket.priority)">
+                {{ ticket.priority }}
+              </span>
+            </td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(ticket.status)">
+                {{ ticket.status }}
+              </span>
+            </td>
+            <td>{{ ticket.category }}</td>
+            <td>{{ ticket.submitted | date:'mediumDate' }}</td>
+            <td class="actions">
+              <!-- View Button -->
+              <button class="action-btn view-btn" title="View Ticket Details" (click)="openViewModal(ticket)">
+                <i class="material-icons">visibility</i>
+              </button>
+              <!-- Edit Button -->
+              <button class="action-btn edit-btn" title="Edit Status" (click)="openEditModal(ticket)">
+                <i class="material-icons">edit</i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ng-template #emptyState>
+        <div class="empty-state">
+          <i class="material-icons">inbox</i>
+          <p>No support tickets found matching your filters</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>
+          {{ modalMode === 'view' ? 'Ticket Details' : 'Update Ticket Status' }}
+          <span class="ticket-id-modal">{{ selectedTicket?.id }}</span>
+        </h2>
+        <button class="close-btn" (click)="closeModal()">×</button>
+      </div>
+
+      <div class="modal-body" *ngIf="selectedTicket">
+        <!-- View Mode -->
+        <div *ngIf="modalMode === 'view'">
+          <p><strong>Title:</strong> {{ selectedTicket.title }}</p>
+          <p><strong>Organization:</strong> {{ selectedTicket.organization }}</p>
+          <p><strong>User:</strong> {{ selectedTicket.user }}</p>
+          <p><strong>Raised By:</strong> {{ selectedTicket.raisedBy || 'N/A' }}</p>
+          <p><strong>Priority:</strong> {{ selectedTicket.priority }}</p>
+          <p><strong>Current Status:</strong> {{ selectedTicket.status }}</p>
+          <p><strong>Category:</strong> {{ selectedTicket.category }}</p>
+          <p><strong>Description:</strong> {{ selectedTicket.description }}</p>
+          <p><strong>Submitted:</strong> {{ selectedTicket.submitted | date:'medium' }}</p>
+          <p><strong>Last Updated:</strong> {{ selectedTicket.lastUpdate | date:'medium' }}</p>
+          <p><strong>Assigned To:</strong> {{ selectedTicket.assignedTo || 'Unassigned' }}</p>
+        </div>
+
+        <!-- Edit Mode -->
+        <div *ngIf="modalMode === 'edit'">
+          <p><strong>Ticket:</strong> {{ selectedTicket.title }}</p>
+          <p><strong>Current Status:</strong> {{ selectedTicket.status }}</p>
+
+          <label for="statusSelect">New Status:</label>
+          <select id="statusSelect" [(ngModel)]="newStatus" class="status-select">
+            <option value="Open">Open</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+            <option value="Closed">Closed</option>
+          </select>
+
+          <div class="modal-actions">
+            <button class="btn-cancel" (click)="closeModal()">Cancel</button>
+            <button class="btn-save" (click)="saveStatus()">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

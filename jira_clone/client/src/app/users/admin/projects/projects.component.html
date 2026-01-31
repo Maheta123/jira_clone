@@ -1,0 +1,66 @@
+<div class="page-container">
+  <div class="header-actions">
+    <h1>Projects Management</h1>
+    <button class="btn-primary" (click)="openCreateForm()">+ Create New Project</button>
+  </div>
+  <p class="subtitle">Overview and control of all projects in JIRA Clone</p>
+
+  <!-- Create/Edit Form -->
+  <div class="form-overlay" *ngIf="showForm">
+    <div class="form-card">
+      <h2>{{ isEditing ? 'Edit Project' : 'Create New Project' }}</h2>
+      <form (ngSubmit)="saveProject()">
+        <div class="form-group">
+          <label>Project Name</label>
+          <input type="text" [(ngModel)]="formProject.name" name="name" required />
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select [(ngModel)]="formProject.status" name="status">
+            <option>Active</option>
+            <option>In Progress</option>
+            <option>Completed</option>
+            <option>Pending</option>
+            <option>Archived</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Assign to Manager</label>
+          <select [(ngModel)]="formProject.managerId" name="managerId">
+            <option value="">Select Manager</option>
+            <option *ngFor="let manager of managers" [value]="manager._id">{{ manager.name }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Initial Issues Count</label>
+          <input type="number" [(ngModel)]="formProject.issues" name="issues" min="0" />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-save">Save</button>
+          <button type="button" class="btn-cancel" (click)="closeForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Projects Grid -->
+  <div class="projects-grid">
+    <div class="project-card" *ngFor="let project of projects; let i = index">
+      <h3>{{ project.name }}</h3>
+      <p><strong>Status:</strong> <span class="status-badge {{project.status | lowercase}}">{{ project.status }}</span></p>
+      <p><strong>Manager:</strong> {{ project.managerName || 'Unassigned' }}</p>
+      <p><strong>Issues:</strong> {{ project.issues }}</p>
+      <p><strong>Members:</strong> {{ project.memberNames?.join(', ') ?? '—' }}</p>
+      <p><strong>Created:</strong> {{ project.joined || '-' }}</p>
+
+      <div class="card-actions">
+        <button class="btn-edit" (click)="openEditForm(project)">Edit</button>
+        <button class="btn-delete" (click)="deleteProject(project._id)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

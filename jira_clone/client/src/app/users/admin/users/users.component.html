@@ -1,0 +1,90 @@
+<div class="page-container">
+  <div class="header-actions">
+    <h1>Users Management</h1>
+    <button class="btn-primary" (click)="openCreateForm()">+ Add New User</button>
+  </div>
+  <p class="subtitle">All registered users in the system</p>
+
+  <!-- Create/Edit Form Modal -->
+  <div class="form-overlay" *ngIf="showForm">
+    <div class="form-card">
+      <h2>{{ isEditing ? 'Edit User' : 'Add New User' }}</h2>
+      <form (ngSubmit)="saveUser()">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" [(ngModel)]="formUser.name" name="name" required />
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="formUser.email" name="email" required />
+        </div>
+
+        <div class="form-group">
+          <label>Role</label>
+          <select [(ngModel)]="formUser.role" name="role">
+            <option value="Admin">Admin</option>
+            <option value="ProjectManager">Project Manager</option>
+            <option value="Developer">Developer</option>
+            <option value="QATester">QA Tester</option>
+          </select>
+        </div>
+
+        <div class="form-group" *ngIf="isEditing">
+          <label>Status</label>
+          <select [(ngModel)]="formUser.status" name="status">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="suspended">Suspended</option>
+            <option value="invited">Invited</option>
+          </select>
+        </div>
+
+        <!-- PASSWORD FOR BOTH -->
+        <div class="form-group">
+          <label>{{ isEditing ? 'Reset Password (optional)' : 'Password' }}</label>
+          <input
+            type="password"
+            [(ngModel)]="formUser.password"
+            name="password"
+            [required]="!isEditing"
+            minlength="8"
+            [placeholder]="isEditing ? 'Leave blank to keep current' : 'Minimum 8 characters'"
+          />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-save">Save User</button>
+          <button type="button" class="btn-cancel" (click)="closeForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Users Table -->
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Joined</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td><span class="role-badge">{{ user.role }}</span></td>
+        <td>{{ user.joined }}</td>
+        <td>{{ user.status }}</td>
+        <td>
+          <button class="btn-edit" (click)="openEditForm(user)">Edit</button>
+          <button class="btn-delete" (click)="deleteUser(user._id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

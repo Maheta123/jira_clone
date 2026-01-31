@@ -1,0 +1,93 @@
+<div class="admin-layout">
+  <!-- Header (sticky, full width) -->
+  <header class="admin-header">
+    <div class="header-content">
+      <div class="logo">
+        <h2>JIRA <span class="admin-badge">Admin</span></h2>
+      </div>
+
+      <div class="user-section">
+  <div class="user-info">
+    <a [routerLink]="['/profile']" class="profile-link">
+      <div
+        class="user-avatar"
+        *ngIf="currentUser"
+        [title]="userName"
+      >
+        {{ getInitials(userName) }}
+      </div>
+    </a>
+
+    <span class="welcome">
+      Welcome, <strong>{{ userName }}</strong>
+    </span>
+  </div>
+
+  <button
+    class="logout-btn"
+    (click)="logout()"
+    title="Sign out"
+  >
+    <i class="material-icons">logout</i>
+    Logout
+  </button>
+</div>
+
+    </div>
+  </header>
+
+  <!-- Sidebar (fixed, below header) -->
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <a routerLink="/admin/dashboard" routerLinkActive="active">
+              <i class="material-icons">dashboard</i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/admin/projects" routerLinkActive="active">
+              <i class="material-icons">folder</i>
+              <span>Projects</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/admin/users" routerLinkActive="active">
+              <i class="material-icons">people</i>
+              <span>Users</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/admin/issues" routerLinkActive="active">
+              <i class="material-icons">bug_report</i>
+              <span>Issues</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/admin/issue-types" routerLinkActive="active">
+              <i class="material-icons">category</i>
+              <span>Issue Types</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/admin/ticket" routerLinkActive="active">
+              <i class="material-icons">support_agent</i>
+              <span>Support Tickets</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+     
+    </div>
+  </aside>
+
+  <!-- Main content area (pushed right & below header) -->
+  <main class="main-content">
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

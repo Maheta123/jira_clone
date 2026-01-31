@@ -1,0 +1,172 @@
+<!-- src/app/users/master-admin/platform-analytics/platform-analytics.component.html -->
+<div class="analytics-container">
+  <div class="page-header">
+    <h1 class="page-title">Platform Analytics</h1>
+    <p class="page-subtitle">Real-time insights and performance metrics across the entire platform</p>
+  </div>
+
+  <!-- Key Metrics Grid -->
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-icon organizations">
+        <i class="material-icons">apartment</i>
+      </div>
+      <div class="metric-content">
+        <h3>Total Organizations</h3>
+        <p class="metric-value">{{ totalOrganizations }}</p>
+        <span class="metric-change positive">+12 this month</span>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon users">
+        <i class="material-icons">supervisor_account</i>
+      </div>
+      <div class="metric-content">
+        <h3>Active Users</h3>
+        <p class="metric-value">{{ totalUsers.toLocaleString() }}</p>
+        <span class="metric-change positive">+8.2% growth</span>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon projects">
+        <i class="material-icons">folder_special</i>
+      </div>
+      <div class="metric-content">
+        <h3>Total Projects</h3>
+        <p class="metric-value">{{ totalProjects }}</p>
+        <span class="metric-change">Avg {{ avgProjectsPerOrg }} per org</span>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon revenue">
+        <i class="material-icons">account_balance_wallet</i>
+      </div>
+      <div class="metric-content">
+        <h3>Monthly Recurring Revenue</h3>
+        <p class="metric-value">${{ mrr.toLocaleString() }}</p>
+        <span class="metric-change positive">+4.2% from last month</span>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon health">
+        <i class="material-icons">health_and_safety</i>
+      </div>
+      <div class="metric-content">
+        <h3>Platform Uptime</h3>
+        <p class="metric-value">{{ uptime }}%</p>
+        <span class="metric-change positive">Response: {{ avgResponseTime }}ms</span>
+      </div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon active">
+        <i class="material-icons">person_outline</i>
+      </div>
+      <div class="metric-content">
+        <h3>Daily Active Users</h3>
+        <p class="metric-value">{{ dailyActiveUsers }}</p>
+        <span class="metric-change">71% of total users</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="charts-section">
+    <!-- User Growth Line Chart -->
+    <div class="chart-card">
+      <h2 class="section-title">User Growth (Last 12 Months)</h2>
+      <div class="line-chart">
+        <div class="chart-grid">
+          <div class="grid-line"></div>
+          <div class="grid-line"></div>
+          <div class="grid-line"></div>
+          <div class="grid-line"></div>
+          <div class="grid-line"></div>
+        </div>
+
+        <!-- Fixed: Use pre-calculated points from component -->
+        <div class="chart-line" [style.--data-points]="userGrowthPoints"></div>
+
+        <div class="chart-labels">
+          <span *ngFor="let month of userGrowth">{{ month.month }}</span>
+        </div>
+        <div class="y-labels">
+          <span>1,300</span>
+          <span>1,100</span>
+          <span>900</span>
+          <span>700</span>
+          <span>500</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MRR Bar Chart -->
+    <div class="chart-card">
+      <h2 class="section-title">MRR Growth Trend</h2>
+      <div class="bar-chart">
+        <div class="bars">
+          <div class="bar-wrapper" *ngFor="let data of mrrGrowth">
+            <div 
+              class="bar" 
+              [style.height.%]="(data.amount / 50000) * 100">
+            </div>
+            <div class="bar-label">${{ (data.amount / 1000).toFixed(0) }}k</div>
+          </div>
+        </div>
+        <div class="x-labels">
+          <span *ngFor="let data of mrrGrowth">{{ data.month }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insights Grid -->
+  <div class="insights-grid">
+    <!-- Top Organizations -->
+    <div class="insight-card">
+      <h2 class="section-title">Top Organizations by Activity</h2>
+      <table class="insights-table">
+        <thead>
+          <tr>
+            <th>Organization</th>
+            <th>Projects</th>
+            <th>Users</th>
+            <th>MRR</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let org of topOrgs">
+            <td class="org-name"><strong>{{ org.name }}</strong></td>
+            <td>{{ org.projects }}</td>
+            <td>{{ org.users }}</td>
+            <td class="amount">${{ org.mrr.toLocaleString() }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- User Activity by Role -->
+    <div class="insight-card">
+      <h2 class="section-title">User Activity by Role</h2>
+      <div class="role-activity">
+        <div class="role-bar" *ngFor="let activity of activityByRole">
+          <div class="role-label">
+            <span class="role-name">{{ activity.role }}</span>
+            <span class="role-count">{{ activity.count }}</span>
+          </div>
+          <div class="bar-background">
+            <!-- Fixed: Use component method -->
+            <div 
+              class="bar-fill" 
+              [style.width.%]="getRolePercentage(activity.count)">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

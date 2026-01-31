@@ -1,0 +1,76 @@
+<!-- src/app/users/dev/dev-my-bugs/dev-my-bugs.component.html -->
+<div class="dev-container">
+  <h1>My Assigned Bugs</h1>
+  <p class="subtitle">Bugs reported by QA and assigned to you for fixing</p>
+
+  <div class="loading" *ngIf="loading">Loading your assigned bugs...</div>
+  <div class="error-message" *ngIf="error">{{ error }}</div>
+
+  <ng-container *ngIf="!loading && !error">
+    <div class="bugs-grid" *ngIf="bugs.length > 0; else noBugs">
+      <div class="bug-card" *ngFor="let bug of bugs">
+        <div class="card-header">
+          <div class="bug-id">{{ bug.taskKey || bug.mongoId.slice(-8) || 'No ID' }}</div>
+          <div class="severity-badge severity-{{ bug.severity.toLowerCase() }}">{{ bug.severity }}</div>
+        </div>
+        <h3 class="bug-title">{{ bug.title }}</h3>
+        <div class="bug-details">
+          <div class="detail-item">
+            <span class="label">Task Key:</span>
+            <span>{{ bug.taskKey || 'Not Assigned' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Project:</span>
+            <span>{{ bug.project }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Status:</span>
+            <span class="status-badge">{{ bug.status }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Reported By:</span>
+            <span>{{ bug.reportedBy }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Reported:</span>
+            <span>{{ bug.reportedDate }}</span>
+          </div>
+        </div>
+
+        <div class="comments-section" *ngIf="bug.showComments">
+          <h4>QA Comments / Description:</h4>
+          <p class="comments-text">{{ bug.description }}</p>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-view-comments" (click)="toggleComments(bug)">
+            {{ bug.showComments ? 'Hide Comments' : 'View Comments' }}
+          </button>
+
+          <button class="btn-retest"
+                  [disabled]="!bug.mongoId || bug.status !== 'Open'"
+                  (click)="startFixing(bug)">
+            Start Fixing
+          </button>
+
+          <button class="btn-pass"
+                  [disabled]="!bug.mongoId || bug.status !== 'In Progress'"
+                  (click)="markFixed(bug)">
+            Mark Fixed
+          </button>
+        </div>
+
+        <div class="warning" *ngIf="!bug.mongoId">
+          <small>Warning: Missing task key/ID – cannot update status</small>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noBugs>
+      <div class="empty-state">
+        <p>No open bugs assigned to you right now. Great job!</p>
+        <p>When QA reports bugs, they'll appear here.</p>
+      </div>
+    </ng-template>
+  </ng-container>
+</div>

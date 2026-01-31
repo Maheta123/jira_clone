@@ -1,0 +1,171 @@
+/* contact.component.css */
+.contact-container {
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 20px;
+}
+
+.form-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card-header {
+  background: #f8f9fa;
+  padding: 20px 40px 0;
+}
+
+.tabs {
+  display: flex;
+  background: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #495057;
+}
+
+.tab-btn.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.tab-btn:hover:not(.active) {
+  background-color: #dee2e6;
+}
+
+.card-body {
+  padding: 40px;
+}
+
+.card-body h1 {
+  text-align: center;
+  color: #212529;
+  margin-bottom: 12px;
+  font-size: 28px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #6c757d;
+  margin-bottom: 32px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #343a40;
+  font-size: 15px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+
+
+.star {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  cursor: pointer;
+  color: #ced4da;            /* default grey (empty star) */
+  transition: color 0.2s ease, transform 0.2s ease;
+  user-select: none;
+  pointer-events: auto;
+}
+
+.star:hover {
+  transform: scale(1.2);
+  color: #ffca2c;            /* hover gold */
+}
+
+.star.filled {
+  color: #ffc107;            /* selected/filled gold */
+}
+
+
+
+
+
+
+.btn-submit {
+  width: 100%;
+  padding: 16px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover:not([disabled]) {
+  background-color: #218838;
+}
+
+.btn-submit[disabled] {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  margin: 15px 0;
+  border: 1px solid #f5c6cb;
+}
+
+.success-message {
+  color: #155724;
+  background-color: #d4edda;
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  margin: 15px 0;
+  border: 1px solid #c3e6cb;
+}

@@ -1,0 +1,51 @@
+<div class="qa-layout">
+  <!-- Fixed Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="user-avatar">
+      
+        <span class="initials">{{ userInitials }}</span>
+      </div>
+      <div class="user-info">
+        <h3>{{ userName }}</h3>
+        <span class="role">QA Tester</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li>
+          <a routerLink="/qa/dashboard" routerLinkActive="active">
+            <i class="icon-dashboard"></i> Dashboard
+          </a>
+        </li>
+        <li>
+          <a routerLink="/qa/my-bugs" routerLinkActive="active">
+            <i class="icon-bugs"></i> My Bugs
+          </a>
+        </li>
+        <li>
+          <a routerLink="/qa/report-bug" routerLinkActive="active">
+            <i class="icon-report"></i> Report Bug
+          </a>
+        </li>
+        <li>
+          <a routerLink="/qa/test-execution" routerLinkActive="active">
+            <i class="icon-test"></i> Test Execution
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <i class="icon-logout"></i> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

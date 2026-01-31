@@ -1,0 +1,82 @@
+<div class="page-container">
+  <div class="header-actions">
+    <h1>Issue Types Management</h1>
+    <button class="btn-primary" (click)="openCreateForm()">+ Add Issue Type</button>
+  </div>
+  <p class="subtitle">Define and manage issue types used across projects</p>
+
+  <!-- Form Modal -->
+  <div class="form-overlay" *ngIf="showForm">
+    <div class="form-card">
+      <h2>{{ isEditing ? 'Edit Issue Type' : 'Create New Issue Type' }}</h2>
+      <form (ngSubmit)="saveIssueType()">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" [(ngModel)]="formIssueType.name" name="name" required />
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea [(ngModel)]="formIssueType.description" name="description" rows="3"></textarea>
+        </div>
+
+<div class="form-group">
+  <label>Icon (Emoji)</label>
+  <div class="icon-compact">
+    <select 
+      class="icon-select"
+      [(ngModel)]="formIssueType.icon"
+      name="icon">
+      <option value="🐛">🐛 Bug</option>
+      <option value="✅">✅ Task</option>
+      <option value="📋">📋 Sub-task</option>
+      <option value="📘">📘 Story</option>
+      <option value="🏔️">🏔️ Epic</option>
+      <option value="⚡">⚡ Improvement</option>
+      <option value="🔧">🔧 Technical</option>
+      <option value="⭐">⭐ New Feature</option>
+      <option value="🚀">🚀 Release</option>
+      <option value="❓">❓ Question</option>
+      <option value="🎨">🎨 Design</option>
+      <option value="🧪">🧪 Test</option>
+      <option value="📝">📝 Documentation</option>
+      <option value="🔥">🔥 Hotfix</option>
+      <option value="⚙️">⚙️ Config</option>
+    </select>
+
+   
+
+  </div>
+</div>
+
+        <div class="form-group">
+          <label>Type</label>
+          <select [(ngModel)]="formIssueType.type" name="type">
+            <option value="standard">Standard</option>
+            <option value="subtask">Sub-task</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-save">Save</button>
+          <button type="button" class="btn-cancel" (click)="closeForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Issue Types Grid -->
+  <div class="issues-grid">
+    <div class="issue-type-card" *ngFor="let it of issueTypes; let i = index">
+      <div class="icon-large">{{ it.icon }}</div>
+      <h3>{{ it.name }}</h3>
+      <p class="description">{{ it.description }}</p>
+      <p><strong>Type:</strong> {{ it.type === 'subtask' ? 'Sub-task' : 'Standard' }}</p>
+
+     <div class="card-actions">
+  <button class="btn-edit" (click)="openEditForm(it)">Edit</button>
+  <button class="btn-delete" (click)="deleteIssueType(it._id!)">Delete</button>
+</div>
+    </div>
+  </div>
+</div>

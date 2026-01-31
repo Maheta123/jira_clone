@@ -1,0 +1,658 @@
+/* finance-billing.component.css - Premium SaaS Finance Dashboard */
+
+.finance-container {
+  padding: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #f5f9ff;
+  min-height: 100vh;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.page-title {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #0d47a1;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #1976d2;
+  border: 2px solid #1976d2;
+  padding: 0.8rem 1.6rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-outline:hover {
+  background: #1976d2;
+  color: white;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.modal-header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #e0e7ff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #1976d2;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.modal-close-btn:hover {
+  color: #d32f2f;
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.invoice-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1rem 2rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 0.3rem;
+}
+
+.detail-value {
+  color: #333;
+}
+
+.modal-status {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.modal-footer {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid #e0e7ff;
+  text-align: right;
+}
+
+.modal-footer button {
+  margin-left: 1rem;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #1976d2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+/* Additional styles for Generate Invoice Modal */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d9e6;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid #e0e7ff;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid #1976d2;
+  color: #1976d2;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-outline:hover {
+  background: #1976d2;
+  color: white;
+}
+
+.btn-primary {
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover {
+  background: #1565c0;
+}
+
+.btn-primary:disabled {
+  background: #a5c8f1;
+  cursor: not-allowed;
+}
+
+/* Status badge in modal */
+.modal-status {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Error message in generate form */
+.error {
+  color: #d32f2f;
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* Fix small spacing issues in grid */
+.invoice-detail-grid {
+  gap: 1.2rem 2.5rem;
+}
+
+/* Make sure actions buttons have hover effect */
+.action-btn:hover {
+  background: #e3f2fd;
+  transform: scale(1.15);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.btn-primary {
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+  color: white;
+  border: none;
+  padding: 0.9rem 1.8rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
+}
+
+/* Summary Cards */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3.5rem;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: transform 0.3s;
+}
+
+.summary-card:hover {
+  transform: translateY(-8px);
+}
+
+.card-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px !important;
+  color: white;
+}
+
+.card-icon.revenue {
+  background: linear-gradient(135deg, #4caf50, #388e3c);
+}
+
+.card-icon.mrr {
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+}
+
+.card-icon.subs {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+}
+
+.card-icon.churn {
+  background: linear-gradient(135deg, #d32f2f, #b71c1c);
+}
+
+.card-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.amount {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #0d47a1;
+  margin: 0.5rem 0;
+}
+
+.change {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.change.positive {
+  color: #2e7d32;
+}
+
+.change.neutral {
+  color: #666;
+}
+
+/* MRR Chart */
+.chart-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  color: #0d47a1;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.mrr-chart {
+  height: 300px;
+  position: relative;
+}
+
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 100%;
+  padding: 0 1rem;
+}
+
+.bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.bar {
+  width: 60%;
+  background: linear-gradient(to top, #1976d2, #42a5f5);
+  border-radius: 10px 10px 0 0;
+  transition: height 0.8s ease;
+  box-shadow: 0 4px 10px rgba(25, 118, 210, 0.3);
+}
+
+.bar-label {
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #1976d2;
+  font-size: 1.1rem;
+}
+
+.month-label {
+  margin-top: 0.5rem;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Invoices Table */
+.invoices-section {
+  margin-bottom: 2rem;
+}
+
+.table-container {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.invoices-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoices-table th {
+  background: #f8f9fa;
+  text-align: left;
+  padding: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  font-size: 1.05rem;
+}
+
+.invoices-table td {
+  padding: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.invoice-id {
+  font-family: monospace;
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.amount {
+  font-weight: 700;
+  color: #0d47a1;
+  font-size: 1.2rem;
+}
+
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.status-badge.paid {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.pending {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.status-badge.overdue {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.action-btn {
+  background: #f8fbff;
+  border: 1px solid #e0e7ff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.action-btn:hover {
+  background: #e3f2fd;
+  transform: scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-bars {
+    padding: 0 0.5rem;
+  }
+
+  .bar {
+    width: 80%;
+  }
+}
+
+
+/* MRR Chart - Professional & Fixed */
+/* MRR Chart - Fully Fixed & Animated */
+.chart-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 1.9rem;
+  color: #0d47a1;
+  margin-bottom: 2.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.mrr-chart {
+  display: flex;
+  height: 420px;
+  position: relative;
+  padding: 0 2rem;
+}
+
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 40px 0;
+  margin-right: 1.5rem;
+  font-size: 0.95rem;
+  color: #666;
+  font-weight: 500;
+  text-align: right;
+  width: 60px;
+}
+
+.chart-area {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  border-bottom: 2px solid #e0e7ff;
+}
+
+.grid-lines {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 40px;
+  pointer-events: none;
+}
+
+.grid-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed #e0e7ff;
+}
+
+.grid-line:nth-child(1) { top: 20%; }
+.grid-line:nth-child(2) { top: 40%; }
+.grid-line:nth-child(3) { top: 60%; }
+.grid-line:nth-child(4) { top: 80%; }
+
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 100%;
+  padding: 40px 0;
+  position: relative;
+}
+
+.bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  height: 100%;
+}
+
+.bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  width: 100%;
+}
+
+.bar {
+  width: 70px;
+  background: linear-gradient(to top, #0d47a1 0%, #1976d2 50%, #42a5f5 100%);
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 8px 20px rgba(25, 118, 210, 0.3);
+  height: 0; /* Start from 0 */
+  min-height: 8px;
+  transition: height 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Apply height AFTER component loads */
+.bar.grow {
+  height: calc(var(--bar-height) * 1%) !important;
+}
+
+.bar-value {
+  margin-top: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0d47a1;
+}
+
+.month-label {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #555;
+  font-weight: 500;
+}
+
+
+
+/* Responsive */
+@media (max-width: 992px) {
+  .mrr-chart {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .y-axis {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    height: auto;
+    margin-right: 0;
+    margin-bottom: 1rem;
+    padding: 0;
+  }
+
+  .chart-area {
+    height: 300px;
+  }
+
+  .bar {
+    width: 50px;
+  }
+}

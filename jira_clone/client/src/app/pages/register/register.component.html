@@ -1,0 +1,55 @@
+<br><br><br><br><br>
+<!-- register.component.html -->
+<div class="register-container">
+  <div class="register-card">
+    <h1>Create Account</h1>
+    <p class="subtitle">Join your team's JIRA Clone workspace</p>
+
+    <form class="register-form" (ngSubmit)="register()">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input [(ngModel)]="user.name" name="name" required />
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input [(ngModel)]="user.email" name="email" type="email" required />
+      </div>
+
+     <div class="form-group">
+    <label>Company Code</label>
+    <input 
+      [(ngModel)]="user.companyCode" 
+      name="companyCode" 
+      type="text" 
+      placeholder="e.g. 100001" 
+      required 
+      (input)="user.companyCode = user.companyCode.toUpperCase()" />
+    <small>Ask your admin for your organization's invite code if you don't have one.</small>
+     </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input [(ngModel)]="user.password" name="password" type="password" required />
+      </div>
+
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input [(ngModel)]="confirmPassword" name="confirmPassword" type="password" required />
+      </div>
+
+      <!-- Add error and success messages -->
+      <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+      <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+
+      <button type="submit" class="btn-register" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Create Account</span>
+        <span *ngIf="isLoading">Loading...</span>  <!-- Simple loading text; add spinner CSS if needed -->
+      </button>
+
+      <p class="login-text">
+        Already have an account? <a routerLink="/login">Login here</a>
+      </p>
+    </form>
+  </div>
+</div>
