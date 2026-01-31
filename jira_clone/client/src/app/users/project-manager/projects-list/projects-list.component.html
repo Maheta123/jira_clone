@@ -1,0 +1,156 @@
+<div class="projects-container">
+  <div class="page-header">
+    <h2>My Projects</h2>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    Loading projects...
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Projects -->
+  <div class="projects-grid" *ngIf="!isLoading && !errorMessage">
+
+    <div class="project-card" *ngFor="let project of projects">
+
+      <!-- Header -->
+      <div class="project-header">
+        <div>
+          <h3>{{ project.name }}</h3>
+          <span class="meta">
+            Manager: <strong>{{ project.managerName }}</strong>
+          </span>
+        </div>
+
+        <span class="status-badge" [ngClass]="getStatusClass(project.status)">
+          {{ project.status }}
+        </span>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-wrapper">
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="project.progress"></div>
+        </div>
+        <span class="progress-text">{{ project.progress }}% completed</span>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat">
+          <span class="value">{{ project.tasksCount }}</span>
+          <span class="label">Tasks</span>
+        </div>
+
+        <div class="stat">
+          <span class="value">{{ project.openTasks }}</span>
+          <span class="label">Open</span>
+        </div>
+
+        <div class="stat">
+          <span class="value">
+            {{ project.membersCount }}/{{ project.membersLimit }}
+          </span>
+          <span class="label">Members</span>
+        </div>
+
+        <div class="stat">
+          <span class="value">{{ project.issues }}</span>
+          <span class="label">Issues</span>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div *ngIf="project.dueSoon" class="alert">
+        ⚠ Tasks due soon
+      </div>
+
+      <!-- Actions -->
+      <div class="card-actions">
+
+        <!-- Assign (ONLY when space is available) -->
+        <button
+          *ngIf="canAssign(project)"
+          class="assign-btn"
+          (click)="openAssignModal(project)">
+          Assign Member
+        </button>
+
+        <!-- Edit (ONLY when limit reached) -->
+        <button
+          *ngIf="!canAssign(project)"
+          class="edit-btn"
+          (click)="openEditModal(project)">
+          Edit Members
+        </button>
+
+        <a
+          [routerLink]="['/project-manager/projects', project._id]"
+          class="details-btn">
+          View Details →
+        </a>
+      </div>
+    </div>
+
+    <!-- Empty -->
+    <div *ngIf="projects.length === 0" class="empty-state">
+      <h3>No Projects Found</h3>
+      <p>Ask admin to assign or create projects</p>
+    </div>
+  </div>
+
+  <!-- ASSIGN MODAL -->
+  <div *ngIf="showAssignModal" class="modal-overlay">
+    <div class="modal">
+      <h3>Assign Member</h3>
+      <p class="modal-subtitle">{{ selectedProject?.name }}</p>
+
+      <div *ngIf="assignError" class="error-message">{{ assignError }}</div>
+      <div *ngIf="assignSuccessMessage" class="success-message">{{ assignSuccessMessage }}</div>
+
+      <select [(ngModel)]="selectedUserId" [disabled]="assignLoading">
+        <option value="">Select user</option>
+        <option *ngFor="let user of availableUsers" [value]="user._id">
+          {{ user.name }} — {{ user.role }} ({{ user.projectCount }})
+        </option>
+      </select>
+
+      <div class="modal-actions">
+        <button class="cancel" (click)="closeAssignModal()">Cancel</button>
+        <button class="confirm" (click)="assignUser()" [disabled]="!selectedUserId">
+          Assign
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDIT MODAL -->
+  <div *ngIf="showEditModal" class="modal-overlay">
+    <div class="modal">
+      <h3>Edit Members</h3>
+      <p class="modal-subtitle">{{ selectedProject?.name }}</p>
+
+      <div *ngIf="editError" class="error-message">{{ editError }}</div>
+
+      <div class="member-row" *ngFor="let member of projectMembers">
+        <div>
+          <strong>{{ member.name }}</strong><br />
+          <small>{{ member.role }}</small>
+        </div>
+        <button class="remove-btn" (click)="removeMember(member._id)">
+          Remove
+        </button>
+      </div>
+
+      <div class="modal-actions">
+        <button class="cancel" (click)="closeEditModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

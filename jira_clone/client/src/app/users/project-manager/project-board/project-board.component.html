@@ -1,0 +1,137 @@
+<!-- src/app/project-board/project-board.component.html (Final version) -->
+<div class="pm-container">
+  <h1>Task Board</h1>
+  <p class="subtitle">Visualize and manage task progress across projects</p>
+
+  <!-- Filters & Search Bar -->
+  <div class="controls-bar">
+    <div class="search-container">
+      <input
+        type="text"
+        placeholder="Search tasks by title or ID..."
+        [(ngModel)]="searchQuery"
+        (input)="applyFilters()"
+        class="search-input"
+      />
+    </div>
+
+    <div class="filter-container">
+      <select
+        [(ngModel)]="selectedProject"
+        (change)="applyFilters()"
+        class="project-select"
+      >
+        <option value="">All Projects</option>
+        <option *ngFor="let project of projects" [value]="project._id">
+          {{ project.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Kanban Board -->
+  <div class="kanban-board">
+    <div
+      class="column"
+      *ngFor="let col of filteredColumns"
+    >
+      <div class="column-header">
+        <h3>{{ col.name }}</h3>
+        <span class="count">{{ col.tasks.length }}</span>
+      </div>
+
+      <div
+        class="task-list"
+        cdkDropList
+        [id]="col.key"
+        [cdkDropListData]="col.tasks"
+        [cdkDropListConnectedTo]="getConnectedListIds()"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div
+          class="task-card"
+          *ngFor="let task of col.tasks"
+          cdkDrag
+        >
+          <!-- Edit button - appears on hover -->
+          <button 
+            class="edit-btn"
+            (click)="openEditModal(task)"
+            title="Edit task"
+          >
+            ✎
+          </button>
+          <h4>{{ task.title }}</h4>
+          <p class="task-description">{{ task.description || 'No description' }}</p>  <!-- Added -->
+          <p class="task-id">{{ task.id }}</p>
+          <p class="assignee">Assigned to: {{ task.assignee }}</p>
+
+          <span class="priority-badge priority-{{ task.priority.toLowerCase() }}">
+            {{ task.priority }}
+          </span>
+
+          <small class="project-tag">{{ task.projectName }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div *ngIf="showEditModal" class="modal-overlay">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h2>Edit Task {{selectedTask?.id}}</h2>
+      <button class="close-btn" (click)="closeEditModal()">×</button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="detail-group">
+        <label>Task ID</label>
+        <div class="task-id-display">{{selectedTask?.id}}</div>
+      </div>
+
+      <div class="detail-group">
+        <label for="edit-title">Title</label>
+        <input id="edit-title" class="detail-input"
+               [(ngModel)]="selectedTask!.title"
+               placeholder="Task title" />
+      </div>
+
+      <!-- Description -->
+      <div class="detail-group">
+        <label for="edit-description">Description</label>
+        <textarea id="edit-description" class="detail-textarea"
+                  [(ngModel)]="selectedTask!.description"
+                  placeholder="Task description"></textarea>
+      </div>
+
+      <!-- Priority -->
+      <div class="detail-group">
+        <label for="edit-priority">Priority</label>
+        <select id="edit-priority" class="detail-select"
+                [(ngModel)]="selectedTask!.priority">
+          <option value="Critical">Critical</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+
+      <!-- You can add more fields later: dueDate, assignee, etc. -->
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeEditModal()">
+        Cancel
+      </button>
+      <button class="btn-save" (click)="saveTask()" [disabled]="!selectedTask?.title?.trim()">
+        Save Changes
+      </button>
+    </div>
+
+  </div>
+</div>

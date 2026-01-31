@@ -1,0 +1,115 @@
+<div class="plans-container">
+  <div class="page-header">
+    <h1 class="page-title">Subscription Plans</h1>
+    <button class="btn-primary" (click)="openModal()">
+      <i class="material-icons">add</i> Create New Plan
+    </button>
+  </div>
+
+  <!-- Loading / Error -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading plans...</p>
+  </div>
+
+  <div class="error-message" *ngIf="errorMessage && !isLoading">
+    <p>{{ errorMessage }}</p>
+    <button (click)="loadPlans()" class="retry-btn">Try Again</button>
+  </div>
+
+  <!-- Main content -->
+  <div *ngIf="!isLoading && !errorMessage">
+    <div class="plans-grid">
+      <div class="plan-card" *ngFor="let plan of plans" [class.inactive]="!plan.isActive">
+        <div class="plan-header">
+          <h3>{{ plan.name }}</h3>
+          <div class="org-status">
+            <span class="org-count">{{ plan.organizationsCount }} organizations</span>
+            <span class="status-badge" [ngClass]="{'active': plan.isActive, 'inactive': !plan.isActive}">
+              {{ plan.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="pricing">
+          <div class="monthly">
+            <sup>$</sup>{{ plan.priceMonthly }}<span>/month</span>
+          </div>
+          <div class="yearly">
+            <sup>$</sup>{{ plan.priceYearly }}<span>/year</span>
+          </div>
+        </div>
+
+        <ul class="features">
+          <li *ngFor="let feature of plan.features">
+            <i class="material-icons">check_circle</i> {{ feature }}
+          </li>
+        </ul>
+
+        <div class="plan-actions">
+          <button class="action-btn" (click)="openModal(plan)" title="Edit Plan">
+            <i class="material-icons">edit</i>
+          </button>
+          <button class="action-btn" [class.danger]="plan.isActive" (click)="togglePlanStatus(plan)" title="Toggle Active">
+            <i class="material-icons">{{ plan.isActive ? 'pause_circle' : 'play_circle' }}</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()"></div>
+  <div class="modal" *ngIf="isModalOpen">
+    <div class="modal-header">
+      <h2>{{ editingPlan ? 'Edit' : 'Create' }} Subscription Plan</h2>
+      <button class="close-btn" (click)="closeModal()">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Plan Name <span class="required">*</span></label>
+        <input type="text" [(ngModel)]="newPlan.name" placeholder="e.g. Pro" />
+      </div>
+
+      <div class="price-section">
+        <div class="form-group">
+          <label>Monthly Price ($) <span class="required">*</span></label>
+          <input type="number" [(ngModel)]="newPlan.priceMonthly" min="0" placeholder="49" />
+        </div>
+        <div class="form-group">
+          <label>Yearly Price ($) <span class="required">*</span></label>
+          <input type="number" [(ngModel)]="newPlan.priceYearly" min="0" placeholder="499" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Active</label>
+        <label class="switch">
+          <input type="checkbox" [(ngModel)]="newPlan.isActive" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>Features</label>
+        <div class="feature-input">
+          <input type="text" [(ngModel)]="currentFeature" placeholder="e.g. Unlimited users" (keyup.enter)="addFeature()" />
+          <button class="btn-small" (click)="addFeature()">Add</button>
+        </div>
+        <ul class="feature-list">
+          <li *ngFor="let feature of newPlan.features; let i = index">
+            {{ feature }}
+            <button class="remove-feature" (click)="removeFeature(i)">×</button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeModal()">Cancel</button>
+        <button class="btn-primary" (click)="savePlan()">Save Plan</button>
+      </div>
+    </div>
+  </div>
+</div>

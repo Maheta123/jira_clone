@@ -1,0 +1,136 @@
+<div class="pm-container">
+  <div class="header-section">
+    <h1>Create New Task</h1>
+    <p class="subtitle">Add a new task to your project backlog</p>
+  </div>
+
+  <form (ngSubmit)="createTask()" class="task-form" #taskForm="ngForm">
+
+    <!-- Project -->
+    <div class="form-group">
+      <label for="project">Project <span class="required">*</span></label>
+      <select
+        id="project"
+        [(ngModel)]="newTask.projectId"
+        name="projectId"
+        (change)="onProjectChange()"
+        required
+        [disabled]="isSubmitting"
+      >
+        <option value="" disabled>Select project</option>
+        <option *ngFor="let p of projects" [value]="p._id">
+          {{ p.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Title -->
+    <div class="form-group">
+      <label for="title">Task Title <span class="required">*</span></label>
+      <input
+        id="title"
+        type="text"
+        [(ngModel)]="newTask.title"
+        name="title"
+        placeholder="e.g. Implement user authentication"
+        required
+        [disabled]="isSubmitting"
+      />
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        [(ngModel)]="newTask.description"
+        name="description"
+        rows="4"
+        placeholder="Provide more details about the task..."
+        [disabled]="isSubmitting"
+      ></textarea>
+    </div>
+
+    <!-- Assignee Row -->
+    <div class="form-row">
+      <!-- Developer -->
+      <div class="form-group">
+        <label for="developer">Developer <span class="required">*</span></label>
+        <select
+          id="developer"
+          [(ngModel)]="newTask.developerId"
+          name="developerId"
+          required
+          [disabled]="!newTask.projectId || developers.length === 0 || isSubmitting"
+        >
+          <option value="" disabled>Select Developer</option>
+          <option *ngFor="let d of developers" [value]="d._id">
+            {{ d.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- QA Tester -->
+      <div class="form-group">
+        <label for="qa">QA Tester <span class="required">*</span></label>
+        <select
+          id="qa"
+          [(ngModel)]="newTask.qaId"
+          name="qaId"
+          required
+          [disabled]="!newTask.projectId || qaTesters.length === 0 || isSubmitting"
+        >
+          <option value="" disabled>Select QA Tester</option>
+          <option *ngFor="let q of qaTesters" [value]="q._id">
+            {{ q.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Priority -->
+    <div class="form-group">
+      <label for="priority">Priority</label>
+      <select
+        id="priority"
+        [(ngModel)]="newTask.priority"
+        name="priority"
+        [disabled]="isSubmitting"
+      >
+        <option value="Critical">Critical</option>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+      </select>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <button
+        type="submit"
+        class="btn-create"
+        [disabled]="isSubmitting || taskForm.invalid"
+      >
+        {{ isSubmitting ? 'Creating...' : 'Create Task' }}
+      </button>
+
+      <button
+        type="button"
+        class="btn-cancel"
+        (click)="resetForm()"
+        [disabled]="isSubmitting"
+      >
+        Clear Form
+      </button>
+    </div>
+
+    <!-- Messages -->
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </form>
+</div>

@@ -1,0 +1,130 @@
+<div class="contact-container">
+  <div class="form-card">
+
+    <!-- Tabs -->
+    <div class="card-header">
+      <div class="tabs">
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="selectedPurpose === 'contact'"
+          (click)="selectPurpose('contact')">
+          Contact Us
+        </button>
+
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="selectedPurpose === 'feedback'"
+          (click)="selectPurpose('feedback')">
+          Give Feedback
+        </button>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body">
+      <h1>{{ selectedPurpose === 'contact' ? 'Contact Us' : 'Give Feedback' }}</h1>
+
+      <p class="subtitle">
+        {{ selectedPurpose === 'contact'
+          ? 'We’d love to hear from you! Fill out the form below.'
+          : 'Help us improve. Share your feedback.' }}
+      </p>
+
+      <form
+        class="contact-form"
+        (ngSubmit)="submitForm()"
+        #contactForm="ngForm">
+
+        <!-- NAME -->
+        <div class="form-group">
+          <label>Your Name</label>
+          <input
+            type="text"
+            name="name"
+            [(ngModel)]="formData.name"
+            required />
+        </div>
+
+        <!-- EMAIL -->
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            name="email"
+            [(ngModel)]="formData.email"
+            required />
+        </div>
+
+        <!-- SUBJECT -->
+        <div class="form-group" *ngIf="selectedPurpose === 'contact'">
+          <label>Subject</label>
+          <input
+            type="text"
+            name="subject"
+            [(ngModel)]="formData.subject" />
+        </div>
+
+        <!-- RATING -->
+        <div class="form-group" *ngIf="selectedPurpose === 'feedback'">
+          <label>Rating</label>
+        <div class="rating-stars">
+          <span
+            *ngFor="let star of [1,2,3,4,5]"
+            (click)="formData.rating = star"
+            [class.filled]="star <= formData.rating"
+            class="star">☆</span>
+        </div>
+        </div>
+
+        <!-- CATEGORY -->
+        <div class="form-group" *ngIf="selectedPurpose === 'feedback'">
+          <label>Category</label>
+          <select name="category" [(ngModel)]="formData.category">
+            <option value="">General</option>
+            <option value="bug">Bug</option>
+            <option value="feature">Feature</option>
+            <option value="ui">UI/UX</option>
+            <option value="performance">Performance</option>
+          </select>
+        </div>
+
+        <!-- MESSAGE -->
+        <div class="form-group">
+          <label>Message</label>
+          <textarea
+            rows="6"
+            name="message"
+            [(ngModel)]="formData.message"
+            required>
+          </textarea>
+        </div>
+
+        <!-- STATUS -->
+        <p *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </p>
+
+        <p *ngIf="successMessage" class="success-message">
+          {{ successMessage }}
+        </p>
+
+        <!-- SUBMIT -->
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="isLoading">
+
+          <span *ngIf="!isLoading">
+            {{ selectedPurpose === 'contact' ? 'Send Message' : 'Submit Feedback' }}
+          </span>
+
+          <span *ngIf="isLoading">
+            Sending...
+          </span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

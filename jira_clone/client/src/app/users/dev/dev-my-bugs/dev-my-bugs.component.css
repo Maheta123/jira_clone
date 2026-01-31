@@ -1,0 +1,197 @@
+/* src/app/users/dev/dev-my-bugs/dev-my-bugs.component.css */
+.dev-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  color: #172b4d;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #5e6c84;
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+}
+
+.bugs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
+}
+
+.bug-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+
+.bug-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.bug-id {
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #0052cc;
+}
+
+.severity-badge {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.severity-critical { background: #ffebe6; color: #de350b; }
+.severity-high { background: #fff0b3; color: #7a5d00; }
+.severity-medium { background: #deebff; color: #0747a6; }
+.severity-low { background: #e3fcef; color: #006644; }
+
+.bug-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #172b4d;
+  margin-bottom: 20px;
+}
+
+.bug-details {
+  flex: 1;
+  margin-bottom: 24px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.detail-item .label {
+  color: #5e6c84;
+  font-weight: 600;
+}
+
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 16px;
+  background: #f4f5f7;
+  color: #505f79;
+  font-weight: 600;
+}
+
+.card-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-retest, .btn-pass {
+  flex: 1;
+  min-width: 100px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-retest {
+  background: #0052cc;
+  color: white;
+}
+
+.btn-retest:hover {
+  background: #003d99;
+}
+
+.btn-pass {
+  background: #006644;
+  color: white;
+}
+
+.btn-pass:hover {
+  background: #004d33;
+}
+
+@media (max-width: 768px) {
+  .bugs-grid {
+    grid-template-columns: 1fr;
+  }
+  .card-actions {
+    flex-direction: column;
+  }
+}
+/* src/app/users/dev/dev-my-bugs/dev-my-bugs.component.css */
+/* Existing CSS unchanged */
+
+.comments-section {
+  margin: 20px 0;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.comments-section h4 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: #172b4d;
+}
+
+.comments-text {
+  white-space: pre-wrap;
+  color: #505f79;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.btn-view-comments {
+  flex: 1;
+  min-width: 100px;
+  padding: 10px;
+  background: #dfe1e6;
+  color: #172b4d;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-view-comments:hover {
+  background: #c1c7d0;
+}
+
+@media (max-width: 768px) {
+  .card-actions {
+    flex-direction: column;
+  }
+  .card-actions button {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+}
+
+.warning {
+  margin-top: 12px;
+  color: #d32f2f;
+  font-size: 0.85rem;
+  text-align: center;
+}

@@ -1,0 +1,102 @@
+<div class="master-container">
+
+  @if (loading) {
+    <div class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Loading dashboard...</p>
+    </div>
+  } @else if (errorMessage) {
+    <div class="error-message">
+      <p>{{ errorMessage }}</p>
+      <button (click)="retryLoad()">Retry</button>
+    </div>
+  } @else if (stats) {
+
+    <section class="stats-overview">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <i class="stat-icon material-icons">apartment</i>
+          <h3>Total Organizations</h3>
+          <p class="stat-number">{{ organizations?.total ?? '-' }}</p>
+          <span class="stat-change positive">{{ organizations?.change ?? '' }}</span>
+        </div>
+
+        <div class="stat-card">
+          <i class="stat-icon material-icons">supervisor_account</i>
+          <h3>Active Users</h3>
+          <p class="stat-number">{{ users?.active ?? '-' }}</p>
+          <span class="stat-change positive">{{ users?.change ?? '' }}</span>
+        </div>
+
+        <div class="stat-card">
+          <i class="stat-icon material-icons">folder_special</i>
+          <h3>Total Projects</h3>
+          <p class="stat-number">{{ projects?.total ?? '-' }}</p>
+          <span class="stat-change">
+            {{ projects?.newToday ? ('+' + projects!.newToday + ' new today') : '' }}
+          </span>
+        </div>
+
+        <div class="stat-card">
+          <i class="stat-icon material-icons">health_and_safety</i>
+          <h3>System Health</h3>
+          <p class="stat-number">{{ health?.status ?? 'Unknown' }}</p>
+          <span class="stat-change positive">{{ health?.uptime ?? '' }}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="quick-actions">
+      <h2 class="section-title">Quick Actions</h2>
+      <div class="actions-grid">
+        <a routerLink="/master/organizations" class="action-card">
+          <i class="action-icon material-icons">apartment</i>
+          <h3>Manage Organizations</h3>
+          <p>Create, edit, or suspend organizations</p>
+        </a>
+
+        <a routerLink="/master/users" class="action-card">
+          <i class="action-icon material-icons">supervisor_account</i>
+          <h3>Global User Management</h3>
+          <p>View and manage all users across platforms</p>
+        </a>
+
+        <a routerLink="/master/activity" class="action-card">
+          <i class="action-icon material-icons">history</i>
+          <h3>Activity Logs</h3>
+          <p>Monitor system-wide activity and audit trail</p>
+        </a>
+      </div>
+    </section>
+
+<section class="recent-activity">
+  <h2 class="section-title">Recent Platform Activity</h2>
+  <table class="activity-table">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Activity</th>
+        <th>Icon</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (activity of recentActivities; track $index) {
+        <tr>
+          <td data-label="Time">{{ activity.time }}</td>
+          <td data-label="Activity" [innerHTML]="activity.message"></td>
+          <td data-label="Icon">
+            <i class="material-icons">{{ activity.icon }}</i>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="3" class="no-activity">No recent activity found.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</section>
+
+  }
+
+</div>

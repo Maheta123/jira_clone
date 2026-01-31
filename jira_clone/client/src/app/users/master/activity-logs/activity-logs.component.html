@@ -1,0 +1,130 @@
+<div class="activity-logs-container">
+
+  <div class="page-header">
+    <h1 class="page-title">Platform Activity Logs</h1>
+    <p class="page-subtitle">Complete audit trail of all system actions across organizations</p>
+  </div>
+
+  <!-- Loading & Error -->
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading platform activity...</p>
+  </div>
+
+  <div class="error-message" *ngIf="errorMessage && !loading">
+    <p>{{ errorMessage }}</p>
+    <button (click)="retryLoad()">Retry</button>
+  </div>
+
+  <!-- Real content -->
+  <ng-container *ngIf="!loading && !errorMessage">
+
+    <!-- Stats Summary -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total Events</h3>
+        <p class="stat-value">{{ totalCount }}</p>
+      </div>
+      <div class="stat-card green">
+        <h3>Success</h3>
+        <p class="stat-value">{{ successCount }}</p>
+      </div>
+      <div class="stat-card yellow">
+        <h3>Warnings</h3>
+        <p class="stat-value">{{ warningCount }}</p>
+      </div>
+      <div class="stat-card red">
+        <h3>Errors</h3>
+        <p class="stat-value">{{ errorCount }}</p>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+      <div class="search-box">
+        <i class="material-icons">search</i>
+        <input 
+          type="text" 
+          placeholder="Search by user, action, or target..." 
+          [(ngModel)]="searchTerm"
+          (input)="filterLogs()" />
+      </div>
+
+      <div class="filter-buttons">
+        <button 
+          class="filter-btn" 
+          [class.active]="selectedFilter === 'all'"
+          (click)="selectedFilter = 'all'; filterLogs()">
+          All Events
+        </button>
+        <button 
+          class="filter-btn success" 
+          [class.active]="selectedFilter === 'success'"
+          (click)="selectedFilter = 'success'; filterLogs()">
+          Success
+        </button>
+        <button 
+          class="filter-btn warning" 
+          [class.active]="selectedFilter === 'warning'"
+          (click)="selectedFilter = 'warning'; filterLogs()">
+          Warnings
+        </button>
+        <button 
+          class="filter-btn error" 
+          [class.active]="selectedFilter === 'error'"
+          (click)="selectedFilter = 'error'; filterLogs()">
+          Errors
+        </button>
+      </div>
+    </div>
+
+    <!-- Activity Timeline -->
+    <div class="timeline-container">
+      <div class="timeline">
+        <div class="timeline-item" *ngFor="let log of filteredLogs">
+          <div class="timeline-marker" [class]="log.status">
+            <i class="material-icons">{{ getStatusIcon(log.status) }}</i>
+          </div>
+          
+          <div class="timeline-content">
+            <div class="log-card" [class]="log.status">
+              <div class="log-header">
+                <div class="log-info">
+                  <span class="log-id">#{{ log.id }}</span>
+                  <span class="log-time">{{ formatTime(log.timestamp) }}</span>
+                </div>
+                <span class="status-badge" [class]="log.status">
+                  {{ log.status | titlecase }}
+                </span>
+              </div>
+
+              <div class="log-body">
+                <p class="log-action">
+                  <strong>{{ log.user }}</strong> 
+                  <span class="role">({{ log.role }})</span>
+                  {{ log.action }}
+                  <strong>{{ log.target }}</strong>
+                </p>
+                
+                <div class="log-details" *ngIf="log.organization">
+                  <span class="detail">
+                    <i class="material-icons">apartment</i> {{ log.organization }}
+                  </span>
+                  <span class="detail">
+                    <i class="material-icons">public</i> {{ log.ipAddress }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="filteredLogs.length === 0">
+        <i class="material-icons">search_off</i>
+        <p>No activity found matching your filters</p>
+      </div>
+    </div>
+
+  </ng-container>
+</div>

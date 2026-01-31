@@ -1,0 +1,132 @@
+<div class="ticket-container">
+  <div class="ticket-card">
+    <div class="card-header">
+      <h1>Raise a Support Ticket</h1>
+      <p class="subtitle">We'll get back to you as soon as possible</p>
+    </div>
+
+    <form #ticketForm="ngForm" (ngSubmit)="submitTicket(ticketForm)" class="ticket-form">
+      <!-- Title -->
+      <div class="form-group full-width">
+        <label for="title">Title <span class="required">*</span></label>
+        <input
+          id="title"
+          type="text"
+          [(ngModel)]="ticket.title"
+          name="title"
+          required
+          minlength="5"
+          placeholder="Enter a short and descriptive title"
+          class="form-input"
+          #titleCtrl="ngModel"
+        />
+        <div class="error-text" *ngIf="titleCtrl.touched && titleCtrl.invalid">
+          Title is required (minimum 5 characters)
+        </div>
+      </div>
+
+      <!-- Organization & Name - readonly -->
+      <div class="form-row">
+        <div class="form-group half">
+          <label>Organization / Company</label>
+          <input
+            type="text"
+            [(ngModel)]="ticket.organization"
+            name="organization"
+            class="form-input readonly"
+            readonly
+          />
+        </div>
+
+        <div class="form-group half">
+          <label>Your Name</label>
+          <input
+            type="text"
+            [(ngModel)]="ticket.userName"
+            name="userName"
+            class="form-input readonly"
+            readonly
+          />
+        </div>
+      </div>
+
+      <!-- Category & Priority -->
+      <div class="form-row">
+        <div class="form-group half">
+          <label for="category">Category</label>
+          <select
+            id="category"
+            [(ngModel)]="ticket.category"
+            name="category"
+            class="form-select"
+          >
+            <option *ngFor="let cat of categories" [value]="cat.value">
+              {{ cat.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Improved Priority Buttons -->
+        <div class="form-group half">
+          <label>Priority <span class="required">*</span></label>
+          <div class="priority-buttons">
+            <button
+              *ngFor="let p of priorities"
+              type="button"
+              class="priority-btn"
+              [ngClass]="{
+                'low': p.value === 'low',
+                'medium': p.value === 'medium',
+                'high': p.value === 'high',
+                'critical': p.value === 'critical',
+                'active': ticket.priority === p.value
+              }"
+              (click)="ticket.priority = p.value"
+            >
+              {{ p.label }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group full-width">
+        <label for="description">Description <span class="required">*</span></label>
+        <textarea
+          id="description"
+          [(ngModel)]="ticket.description"
+          name="description"
+          required
+          minlength="10"
+          rows="8"
+          placeholder="Please describe the issue in detail, including steps to reproduce if possible..."
+          class="form-textarea"
+          #descCtrl="ngModel"
+        ></textarea>
+        <div class="error-text" *ngIf="descCtrl.touched && descCtrl.invalid">
+          Description is required (minimum 10 characters)
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="messages-container">
+        <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+        <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
+      </div>
+
+      <!-- Submit -->
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="isLoading || ticketForm.invalid"
+        >
+          <span *ngIf="!isLoading">Raise Ticket</span>
+          <span *ngIf="isLoading">
+            <span class="spinner"></span> Submitting...
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,280 @@
+<div class="finance-container">
+  <div class="page-header">
+    <h1 class="page-title">Finance & Billing</h1>
+    <div class="header-actions">
+      <button class="btn-outline" (click)="refreshData()">Refresh Data</button>
+      <button class="btn-outline" (click)="exportReport()">Export Report</button>
+      <button class="btn-primary" (click)="openGenerateModal()">Generate Invoice</button>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="card-icon revenue">
+        <i class="material-icons">trending_up</i>
+      </div>
+      <div class="card-content">
+        <h3>Total Revenue (YTD)</h3>
+        <p class="amount">${{ totalRevenue.toLocaleString() }}</p>
+        <span class="change positive">+18.4% from last year</span>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="card-icon mrr">
+        <i class="material-icons">autorenew</i>
+      </div>
+      <div class="card-content">
+        <h3>Monthly Recurring Revenue</h3>
+        <p class="amount">${{ mrr.toLocaleString() }}</p>
+        <span class="change positive">+6.5% this month</span>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="card-icon subs">
+        <i class="material-icons">add_circle</i>
+      </div>
+      <div class="card-content">
+        <h3>New Subscriptions</h3>
+        <p class="amount">{{ newSubscriptions }}</p>
+        <span class="change positive">This month</span>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="card-icon churn">
+        <i class="material-icons">cancel</i>
+      </div>
+      <div class="card-content">
+        <h3>Churn Rate</h3>
+        <p class="amount">{{ churnRate }}%</p>
+        <span class="change neutral">vs industry avg 3.2%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MRR Chart -->
+  <div class="chart-card">
+    <h2 class="section-title">Monthly Recurring Revenue Trend</h2>
+    <div class="mrr-chart">
+      <div class="y-axis">
+        <span *ngFor="let label of yAxisLabels">{{ label }}</span>
+      </div>
+
+      <div class="chart-area">
+        <div class="grid-lines">
+          <div class="grid-line"></div>
+          <div class="grid-line"></div>
+          <div class="grid-line"></div>
+          <div class="grid-line"></div>
+        </div>
+
+        <div class="chart-bars">
+          <div class="bar-container" *ngFor="let data of mrrData; let i = index">
+            <div class="bar-wrapper">
+              <div 
+                #barElement
+                class="bar" 
+                [attr.data-amount]="data.amount"
+                [style.height]="getBarHeight(data.amount) + '%'"
+                [style.transition]="'height 0.8s ease ' + (i * 0.1) + 's'">
+              </div>
+              <div class="bar-value">${{ data.amount.toLocaleString() }}</div>
+            </div>
+            <div class="month-label">{{ data.month }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Invoices -->
+  <div class="invoices-section">
+    <h2 class="section-title">Recent Invoices</h2>
+    <div class="table-container">
+      <table class="invoices-table">
+        <thead>
+          <tr>
+            <th>Invoice ID</th>
+            <th>Organization</th>
+            <th>Plan</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invoice of invoices">
+            <td class="invoice-id">{{ invoice.id }}</td>
+            <td>{{ invoice.organization }}</td>
+            <td>{{ invoice.plan }}</td>
+            <td class="amount">${{ invoice.amount }}</td>
+            <td>{{ invoice.date }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="invoice.status">
+                {{ invoice.status | titlecase }}
+              </span>
+            </td>
+            <td class="actions">
+              <button 
+                class="action-btn view-btn" 
+                title="View Invoice"
+                (click)="viewInvoice(invoice)">
+                <i class="material-icons">visibility</i>
+              </button>
+
+              <button 
+                class="action-btn download-btn" 
+                title="Download Receipt"
+                (click)="downloadInvoice(invoice)">
+                <i class="material-icons">download</i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- View Invoice Modal -->
+  <div class="modal-overlay" *ngIf="showViewModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Invoice Details</h2>
+        <button class="modal-close-btn" (click)="closeViewModal()">
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+
+      <div class="modal-body" *ngIf="!modalLoading && selectedInvoice">
+        <div class="invoice-detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Invoice ID</span>
+            <span class="detail-value">{{ selectedInvoice.invoiceId }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Organization</span>
+            <span class="detail-value">{{ selectedInvoice.organization }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Plan</span>
+            <span class="detail-value">{{ selectedInvoice.planName || selectedInvoice.plan }} 
+              ({{ selectedInvoice.billingCycle || 'N/A' }})</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Amount</span>
+            <span class="detail-value">${{ selectedInvoice.amount.toFixed(2) }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Period</span>
+            <span class="detail-value">{{ selectedInvoice.formattedDate }} – {{ selectedInvoice.formattedEndDate }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Status</span>
+            <span class="status-badge modal-status" [ngClass]="selectedInvoice.status">
+              {{ selectedInvoice.status | titlecase }}
+            </span>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-outline" (click)="closeViewModal()">Close</button>
+          <button class="btn-primary" (click)="downloadInvoice(selectedInvoice.invoiceId)">
+            Download Receipt
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-body loading" *ngIf="modalLoading">
+        <div class="spinner"></div>
+        <p>Loading invoice details...</p>
+      </div>
+
+      <div class="modal-body error" *ngIf="!modalLoading && !selectedInvoice">
+        <p>Failed to load invoice details.</p>
+        <button class="btn-outline" (click)="closeViewModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generate Invoice Modal -->
+  <div class="modal-overlay" *ngIf="showGenerateModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Generate New Invoice</h2>
+        <button class="modal-close-btn" (click)="closeGenerateModal()">
+          <i class="material-icons">close</i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="submitNewInvoice()" #generateForm="ngForm">
+          <div class="form-group">
+            <label for="organization">Organization Name</label>
+            <input 
+              id="organization" 
+              type="text" 
+              [(ngModel)]="newInvoiceForm.organization" 
+              name="organization" 
+              required 
+              placeholder="Enter organization name" />
+          </div>
+
+          <div class="form-group">
+            <label for="plan">Plan</label>
+            <select 
+              id="plan" 
+              [(ngModel)]="newInvoiceForm.plan" 
+              name="plan" 
+              required>
+              <option value="Starter">Starter</option>
+              <option value="Pro">Pro</option>
+              <option value="Enterprise">Enterprise</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="amount">Amount ($)</label>
+            <input 
+              id="amount" 
+              type="number" 
+              [(ngModel)]="newInvoiceForm.amount" 
+              name="amount" 
+              required 
+              min="1" 
+              placeholder="Enter amount" />
+          </div>
+
+          <div class="form-group">
+            <label for="billingCycle">Billing Cycle</label>
+            <select 
+              id="billingCycle" 
+              [(ngModel)]="newInvoiceForm.billingCycle" 
+              name="billingCycle" 
+              required>
+              <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly</option>
+            </select>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-outline" (click)="closeGenerateModal()">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="generateLoading || !generateForm.valid">
+              {{ generateLoading ? 'Generating...' : 'Generate Invoice' }}
+            </button>
+          </div>
+
+          <p class="error" *ngIf="generateError">{{ generateError }}</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

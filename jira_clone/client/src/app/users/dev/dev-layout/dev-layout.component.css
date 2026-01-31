@@ -1,0 +1,133 @@
+/* src/app/users/dev/dev-layout/dev-layout.component.css */
+
+/* Hide the public top navbar from AppComponent */
+nav.navbar {
+  display: none !important;
+}
+
+.dev-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6f9;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #172b4d;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.sidebar-header {
+  padding: 30px 20px;
+  text-align: center;
+  border-bottom: 1px solid #2d4366;
+  flex-shrink: 0;
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 20px 0;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 14px 30px;
+  color: #a5adba;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.sidebar-nav a:hover {
+  background-color: #2d4366;
+  color: white;
+}
+
+.sidebar-nav a.active {
+  background-color: #0052cc;
+  color: white;
+  border-left: 4px solid #00c7e6;
+}
+
+.sidebar-footer {
+  padding: 20px;
+  text-align: center;
+  border-top: 1px solid #2d4366;
+  flex-shrink: 0;
+}
+
+.sidebar-footer a {
+  color: #a5adba;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.sidebar-footer a:hover {
+  color: white;
+}
+
+.main-content {
+  margin-left: 250px;
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+  min-height: 100vh;
+}
+.sidebar-footer {
+  margin-top: auto;
+  padding: 1rem;
+  border-top: 1px solid #444;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: #c53030;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.logout-btn:hover {
+  background: #9b2c2c;
+}
+
+.user-info {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+/* Optional: icons (you can use font-awesome, heroicons, etc.) */
+.icon-dashboard::before { content: "📊 "; }
+.icon-bugs::before     { content: "🐞 "; }
+.icon-logout::before   { content: "🚪 "; }

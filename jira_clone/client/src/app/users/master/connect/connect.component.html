@@ -1,0 +1,106 @@
+<div class="connect-page">
+  <div class="page-header">
+    <h2>Contact & Feedback Messages</h2>
+    <p>All incoming messages from contact forms and user feedback.</p>
+  </div>
+
+  <!-- Search & Filter Bar -->
+  <div class="controls-bar">
+    <div class="search-container">
+      <i class="material-icons">search</i>
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+        placeholder="Search by name, email, subject, or message..."
+      />
+    </div>
+
+    <div class="filter-container">
+      <i class="material-icons">tune</i>
+      <select [(ngModel)]="selectedType" (change)="onTypeChange()">
+        <option value="all">All Messages</option>
+        <option value="contact">Contact Only</option>
+        <option value="feedback">Feedback Only</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-container">
+    <table class="messages-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Sender</th>
+          <th>Email</th>
+          <th>Subject</th>
+          <th>Type</th>
+          <th>Rating</th>
+          <th>Date</th>
+          <th>Message Preview</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Loading -->
+        <tr *ngIf="loading">
+          <td colspan="9" class="status loading">Loading messages...</td>
+        </tr>
+
+        <!-- Error -->
+        <tr *ngIf="!loading && error">
+          <td colspan="9" class="status error">{{ error }}</td>
+        </tr>
+
+        <!-- Empty -->
+        <tr *ngIf="!loading && messages.length === 0">
+          <td colspan="9" class="status empty">
+            <div class="empty-state">
+              <i class="material-icons large">inbox</i>
+              <p>No messages found</p>
+              <small *ngIf="searchTerm || selectedType !== 'all'">Try adjusting your search or filter</small>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Messages -->
+        <tr *ngFor="let msg of messages" class="message-row">
+          <td class="avatar-cell">
+            <div class="avatar">{{ getInitials(msg.name) }}</div>
+          </td>
+          <td class="sender-cell">
+            <strong>{{ msg.name }}</strong>
+          </td>
+          <td class="email-cell">
+            <a href="mailto:{{ msg.email }}">{{ msg.email }}</a>
+          </td>
+          <td class="subject-cell">{{ msg.subject || '—' }}</td>
+          <td class="type-cell">
+            <span class="badge" [class.contact]="msg.type === 'contact'" [class.feedback]="msg.type === 'feedback'">
+              {{ msg.type | titlecase }}
+            </span>
+          </td>
+          <td class="rating-cell">
+            <span class="stars" *ngIf="msg.rating > 0; else noRating">
+              {{ '★'.repeat(msg.rating) }}{{ '☆'.repeat(5 - msg.rating) }}
+            </span>
+            <ng-template #noRating>—</ng-template>
+          </td>
+          <td class="date-cell">
+            {{ msg.createdAt | date:'mediumDate' }}<br>
+            <small>{{ msg.createdAt | date:'shortTime' }}</small>
+          </td>
+          <td class="preview-cell">
+            {{ msg.message.length > 100 ? (msg.message | slice:0:100) + '...' : msg.message }}
+          </td>
+          <td class="actions-cell">
+            <button class="delete-btn" (click)="deleteMessage(msg._id)" title="Delete">
+              <i class="material-icons">delete_outline</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

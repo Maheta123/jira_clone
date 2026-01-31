@@ -1,0 +1,323 @@
+/* src/app/users/master-admin/platform-analytics/platform-analytics.component.css */
+
+.analytics-container {
+  padding: 2.5rem 3rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #f5f9ff 0%, #eef2ff 100%);
+  min-height: 100vh;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.page-title {
+  font-size: 3.4rem;
+  font-weight: 800;
+  color: #0d47a1;
+  margin: 0 0 1rem 0;
+  background: linear-gradient(135deg, #0d47a1, #1976d2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-subtitle {
+  font-size: 1.35rem;
+  color: #555;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Metrics Grid */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.metric-card {
+  background: white;
+  border-radius: 20px;
+  padding: 35px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  transition: transform 0.3s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-8px);
+}
+
+.metric-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: white;
+}
+
+.metric-icon.organizations { background: linear-gradient(135deg, #7b1fa2, #9c27b0); }
+.metric-icon.users { background: linear-gradient(135deg, #1976d2, #42a5f5); }
+.metric-icon.projects { background: linear-gradient(135deg, #006644, #43a047); }
+.metric-icon.revenue { background: linear-gradient(135deg, #f9a825, #ffb300); }
+.metric-icon.health { background: linear-gradient(135deg, #00bcd4, #26c6da); }
+.metric-icon.active { background: linear-gradient(135deg, #ff7043, #ff8a65); }
+
+.metric-value {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #0d47a1;
+  margin: 10px 0;
+}
+
+.metric-change {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.metric-change.positive { color: #006644; }
+
+/* Charts Section */
+.charts-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.chart-card.large {
+  grid-column: span 1;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  color: #0d47a1;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+/* Line Chart (User Growth) */
+.line-chart {
+  position: relative;
+  height: 400px;
+  background: #f8fbff;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.chart-grid {
+  position: absolute;
+  inset: 40px 60px 60px 80px;
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+}
+
+.grid-line {
+  border-bottom: 1px dashed #e3f2fd;
+}
+
+.chart-line {
+  position: absolute;
+  inset: 40px 60px 60px 80px;
+  background: linear-gradient(90deg, transparent 0%, #1976d2 50%, transparent 100%);
+  mask: 
+    radial-gradient(circle at 50% 50%, black 0%, transparent 70%),
+    linear-gradient(to right, 
+      transparent calc(var(--data-points) * 8.33% - 10px),
+      #1976d2 calc(var(--data-points) * 8.33%),
+      #1976d2 calc(var(--data-points) * 8.33% + 10px),
+      transparent calc(var(--data-points) * 8.33% + 20px)
+    );
+  mask-composite: intersect;
+  -webkit-mask-composite: destination-in;
+}
+
+.chart-labels {
+  position: absolute;
+  bottom: 20px;
+  left: 80px;
+  right: 60px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.y-labels {
+  position: absolute;
+  left: 20px;
+  top: 40px;
+  bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* Bar Chart (MRR) */
+.bar-chart {
+  position: relative;
+  height: 400px;
+  background: #f8fbff;
+  border-radius: 20px;
+  padding: 40px 60px;
+}
+
+.bars {
+  height: 300px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.bar-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bar {
+  width: 60%;
+  background: linear-gradient(to top, #1976d2, #42a5f5);
+  border-radius: 12px 12px 0 0;
+  transition: height 1s ease-out;
+  box-shadow: 0 8px 20px rgba(25, 118, 210, 0.3);
+}
+
+.bar-label {
+  margin-top: 15px;
+  font-weight: 600;
+  color: #0d47a1;
+}
+
+.x-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* Insights Grid */
+.insights-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.insight-card {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+.insights-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.insights-table th {
+  text-align: left;
+  padding: 15px 0;
+  color: #0d47a1;
+  font-weight: 600;
+  border-bottom: 2px solid #e3f2fd;
+}
+
+.insights-table td {
+  padding: 20px 0;
+  border-bottom: 1px solid #eef2ff;
+}
+
+.org-name {
+  font-weight: 600;
+  color: #1a237e;
+}
+
+.amount {
+  font-weight: 700;
+  color: #006644;
+}
+
+/* Role Activity Bars */
+.role-activity {
+  margin-top: 20px;
+}
+
+.role-bar {
+  margin-bottom: 25px;
+}
+
+.role-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #333;
+}
+
+.role-count {
+  color: #0d47a1;
+}
+
+.bar-background {
+  height: 20px;
+  background: #e3f2fd;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1976d2, #42a5f5);
+  border-radius: 10px;
+  transition: width 1s ease;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .charts-section,
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .analytics-container {
+    padding: 1.5rem;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .metric-icon {
+    margin-bottom: 20px;
+  }
+}

@@ -1,0 +1,210 @@
+<div class="report-bug-container">
+  <div class="page-header">
+    <h1 class="page-title">Bug Reports</h1>
+    <p class="page-subtitle">View, report, edit and verify issues</p>
+  </div>
+
+  <div class="filters-bar">
+    <div class="filter-group">
+      <label>Project</label>
+      <select [(ngModel)]="selectedProjectId" (ngModelChange)="onProjectChange()" class="filter-select">
+        <option value="">All Projects</option>
+        <option *ngFor="let p of projects" [value]="p.id">{{ p.name }}</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>View</label>
+      <select [(ngModel)]="selectedView" (ngModelChange)="onViewChange(selectedView)" class="filter-select">
+        <option value="all">All Bugs</option>
+        <option value="reported">My Reported Bugs</option>
+        <option value="assigned">Assigned to Me</option>
+      </select>
+    </div>
+
+    <button class="btn-primary new-bug-btn" (click)="newBug()">
+      + New Bug Report
+    </button>
+  </div>
+
+  <div class="table-section">
+    <div class="loading" *ngIf="loading">Loading bugs...</div>
+    <div class="error" *ngIf="error">{{ error }}</div>
+
+    <div class="success-message" *ngIf="showSuccess">
+      <i class="material-icons">check_circle</i>
+      <p>Bug {{ editingIndex === null ? 'created' : 'updated' }} successfully!</p>
+    </div>
+
+    <div class="table-container" *ngIf="!loading && !error">
+      <table class="bugs-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Project</th>
+            <th>Severity</th>
+            <th>Assignee</th>
+            <th>Status</th>
+            <th>Reported</th>
+            <th>Reporter</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bug of displayedBugReports; let i = index">
+            <td class="bug-id">#{{ bug.id }}</td>
+            <td class="bug-title">{{ bug.title }}</td>
+            <td>{{ bug.projectName }}</td>
+            <td>
+              <span class="severity-badge severity-{{ bug.severity }}">
+                {{ bug.severity | titlecase }}
+              </span>
+            </td>
+            <td>{{ formatAssignees(bug.assignees) }}</td>
+            <td>
+              <span class="status-badge status-{{ bug.status }}">
+                {{ formatStatus(bug.status) }}
+              </span>
+            </td>
+            <td>{{ bug.reportedDate | date:'MMM d, yyyy' }}</td>
+            <td>{{ bug.reportedBy?.name || 'Unknown' }}</td>
+            <td class="actions">
+              <button class="action-btn edit" title="Edit" (click)="editBug(i)">
+                <i class="material-icons">edit</i>
+              </button>
+              <button class="action-btn danger" title="Delete" (click)="deleteBug(i)">
+                <i class="material-icons">delete</i>
+              </button>
+
+              <ng-container *ngIf="bug.assignees?.developer?.userId === currentUserId">
+                <button class="btn-start" (click)="onStart(bug)" *ngIf="bug.status === 'todo'">Start Work</button>
+                <button class="btn-resolve" (click)="onResolve(bug)" *ngIf="bug.status === 'inprogress'">Mark as Fixed</button>
+                <button class="btn-view" (click)="viewComments(bug)">View Comments</button>
+              </ng-container>
+            </td>
+          </tr>
+
+          <tr *ngIf="displayedBugReports.length === 0">
+            <td colspan="9" class="empty-state">
+              No bugs found. {{ currentUserName ? 'Report a new one!' : 'Login to see your bugs.' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="isFormVisible" (click)="cancelEdit()">
+    <div class="modal-form-card" (click)="$event.stopPropagation()">
+      <button class="modal-close-btn" (click)="cancelEdit()">
+        <i class="material-icons">close</i>
+      </button>
+
+      <div class="modal-header">
+        <h2>{{ editingIndex === null ? 'Report New Bug' : 'Edit Bug Report' }}</h2>
+      </div>
+
+      <form #bugForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="form-content">
+          <div class="form-group">
+            <label for="title">Bug Title <span class="required">*</span></label>
+            <input type="text" id="title" name="title" [(ngModel)]="currentBug.title" required class="form-control" />
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description <span class="required">*</span></label>
+            <textarea id="description" name="description" [(ngModel)]="currentBug.description" required rows="5" class="form-control"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="steps">Steps to Reproduce <span class="required">*</span></label>
+            <textarea id="steps" name="steps" [(ngModel)]="currentBug.steps" required rows="4" class="form-control"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="project">Project <span class="required">*</span></label>
+            <select id="project" name="project" [(ngModel)]="currentBug.projectId" required (ngModelChange)="loadDevelopers($event)" class="form-control">
+              <option value="" disabled>Select project</option>
+              <option *ngFor="let p of projects" [value]="p.id">{{ p.name }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="developer">Assign Developer</label>
+            <select id="developer" name="developer" [(ngModel)]="selectedDeveloperId" class="form-control">
+              <option value="">Unassigned</option>
+              <option *ngFor="let dev of developers" [value]="dev.userId">{{ dev.name }}</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label for="severity">Severity <span class="required">*</span></label>
+              <select id="severity" name="severity" [(ngModel)]="currentBug.severity" required class="form-control">
+                <option value="" disabled>Select severity</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="critical">Critical</option>
+              </select>
+            </div>
+
+            <div class="form-group half">
+              <label for="status">Status</label>
+              <select id="status" name="status" [(ngModel)]="currentBug.status" class="form-control">
+                <option value="todo">To Do</option>
+                <option value="inprogress">In Progress</option>
+                <option value="done">Done</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half">
+              <label for="browser">Browser</label>
+              <input type="text" id="browser" name="browser" [(ngModel)]="currentBug.browser" class="form-control" />
+            </div>
+            <div class="form-group half">
+              <label for="os">OS</label>
+              <input type="text" id="os" name="os" [(ngModel)]="currentBug.os" class="form-control" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-outline" (click)="cancelEdit()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="bugForm.invalid">
+            {{ editingIndex === null ? 'Submit Report' : 'Update Report' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2>{{ modalType === 'pass' ? 'Pass' : modalType === 'reopen' ? 'Reopen' : 'Resolve' }} Bug {{ editingBug?.id }}</h2>
+      <form (ngSubmit)="saveChanges()">
+        <div class="form-group">
+          <label>{{ modalType === 'pass' ? 'Verification Comments' : modalType === 'reopen' ? 'Reopen Reason' : 'Resolve Comments' }}</label>
+          <textarea [(ngModel)]="comments" name="comments" required rows="4"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="cancel-btn" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="save-btn">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showCommentsModal" (click)="closeCommentsModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2>Comments for {{ editingBug?.id }}</h2>
+      <pre class="comments-text">{{ commentText || 'No comments yet.' }}</pre>
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="closeCommentsModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

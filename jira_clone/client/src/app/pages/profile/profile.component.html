@@ -1,0 +1,166 @@
+<div class="profile-page">
+  <button class="close-btn" (click)="goBack()" title="Close and go back">
+    <i class="material-icons">close</i>
+  </button>
+  <div class="profile-card">
+    
+    <!-- Header with Avatar -->
+    <div class="profile-header">
+      
+      <div class="avatar-container">
+        <img 
+          [src]="profile?.avatarUrl || 'https://via.placeholder.com/180'" 
+          alt="Profile picture" 
+          class="avatar-img" 
+        />
+        <div class="avatar-overlay" *ngIf="isEditing">
+          <button class="btn-upload">Change Photo</button>
+        </div>
+      </div>
+
+      <div class="header-info">
+        <h1 class="profile-name">{{ profile?.name || 'Loading...' }}</h1>
+        <span class="role-tag">{{ profile?.role || '' }}</span>
+        <p class="email">{{ profile?.email }}</p>
+      </div>
+    </div>
+
+    <!-- Loading & Error -->
+    <div class="loading" *ngIf="isLoading">Loading your profile...</div>
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <!-- Main Content -->
+    <div class="profile-body" *ngIf="profile && !isLoading && !errorMessage">
+      <div class="info-grid">
+        <!-- Personal Info -->
+        <div class="info-card">
+          <h3 class="card-title">Personal Information</h3>
+
+          <div class="field">
+            <label>Full Name</label>
+            <span *ngIf="!isEditing">{{ profile.name || 'Not set' }}</span>
+            <input *ngIf="isEditing" [(ngModel)]="editForm.name" type="text" placeholder="Your name" />
+          </div>
+
+          <div class="field">
+            <label>Email Address</label>
+            <span>{{ profile.email }}</span>
+          </div>
+
+          <div class="field">
+            <label>Role</label>
+            <span class="role-value">{{ profile.role }}</span>
+          </div>
+
+          <div class="field" *ngIf="profile.companyCode">
+            <label>Organization Code</label>
+            <span>{{ profile.companyCode }}</span>
+          </div>
+
+          <div class="field" *ngIf="profile.organizationName">
+            <label>Organization</label>
+            <span>{{ profile.organizationName }}</span>
+          </div>
+        </div>
+
+        <!-- Account Info -->
+        <div class="info-card">
+          <h3 class="card-title">Account Details</h3>
+
+          <div class="field">
+            <label>Status</label>
+            <span class="status-badge" [ngClass]="profile.status">
+              {{ profile.status | titlecase }}
+            </span>
+          </div>
+
+          <div class="field">
+            <label>Member Since</label>
+            <span>{{ profile.createdAt }}</span>
+          </div>
+
+          <div class="field">
+            <label>Last Login</label>
+            <span>{{ profile.lastLogin || 'Never' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Role-specific Info -->
+      <div class="role-section" *ngIf="profile.role">
+        <h3>Role Privileges</h3>
+        <div class="role-info-card">
+          <ng-container [ngSwitch]="profile.role">
+            <div *ngSwitchCase="'MasterAdmin'">
+              <p>You have full system control as Master Admin.</p>
+              <ul>
+                <li>Manage all organizations</li>
+                <li>Global user & billing oversight</li>
+                <li>System configuration access</li>
+              </ul>
+            </div>
+
+            <div *ngSwitchCase="'Admin'">
+              <p>You are an Organization Admin for {{ profile.companyCode }}.</p>
+              <ul>
+                <li>Manage users in your organization</li>
+                <li>Create & assign projects</li>
+                <li>Control issue types & workflows</li>
+              </ul>
+            </div>
+
+            <div *ngSwitchCase="'ProjectManager'">
+              <p>You manage projects and teams.</p>
+              <ul>
+                <li>Assign & track tasks</li>
+                <li>Monitor project progress</li>
+                <li>Coordinate team members</li>
+              </ul>
+            </div>
+
+            <div *ngSwitchCase="'Developer'">
+              <p>You work on development tasks.</p>
+              <ul>
+                <li>Implement features & fixes</li>
+                <li>Update task status</li>
+                <li>Collaborate with team</li>
+              </ul>
+            </div>
+
+            <div *ngSwitchCase="'QATester'">
+              <p>You ensure quality & test features.</p>
+              <ul>
+                <li>Report & verify bugs</li>
+                <li>Test new functionality</li>
+                <li>Provide feedback</li>
+              </ul>
+            </div>
+
+            <div *ngSwitchDefault>
+              <p>Role-specific information not available.</p>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button *ngIf="!isEditing" class="btn-edit" (click)="startEditing()">
+          <i class="material-icons">edit</i> Edit Profile
+        </button>
+
+        <button *ngIf="isEditing" class="btn-save" (click)="saveProfile()" [disabled]="isLoading">
+          <i class="material-icons">save</i> Save Changes
+        </button>
+
+        <button *ngIf="isEditing" class="btn-cancel" (click)="cancelEditing()">
+          <i class="material-icons">close</i> Cancel
+        </button>
+
+        <button class="btn-logout" (click)="logout()">
+          <i class="material-icons">logout</i> Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

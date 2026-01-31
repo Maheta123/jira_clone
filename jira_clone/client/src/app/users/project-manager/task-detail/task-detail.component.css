@@ -1,0 +1,54 @@
+/* src/app/users/project-manager/task-detail/task-detail.component.css */
+.task-detail-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.task-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.info-item {
+  font-size: 1.1rem;
+}
+
+.info-item strong {
+  color: #5e6c84;
+}
+
+.task-description {
+  margin-bottom: 40px;
+}
+
+.task-description h3 {
+  color: #172b4d;
+  margin-bottom: 15px;
+}
+
+.task-actions {
+  display: flex;
+  gap: 20px;
+}
+
+.btn-edit, .btn-comment {
+  padding: 14px 30px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background: #0052cc;
+  color: white;
+}
+
+.btn-comment {
+  background: #006644;
+  color: white;
+}

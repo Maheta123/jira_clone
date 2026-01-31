@@ -1,0 +1,84 @@
+<div class="qa-container">
+  <h1>My Assigned Bugs</h1>
+  <p class="subtitle">Bugs fixed by developers and assigned to you for verification & re-testing</p>
+
+  <div class="loading" *ngIf="loading">Loading bugs...</div>
+  <div class="error" *ngIf="error">{{ error }}</div>
+
+  <div class="table-wrapper" *ngIf="!loading && !error && myBugs.length > 0">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Project</th>
+          <th>Severity</th>
+          <th>Status</th>
+          <th>Dev Assignee</th>
+          <th>Reported</th>
+          <th>Resolved</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bug of myBugs">
+          <td class="bug-id"><strong>{{ bug.id }}</strong></td>
+          <td class="bug-title">{{ bug.title }}</td>
+          <td class="project-cell">{{ bug.project }}</td>
+          <td class="severity-cell">
+            <span class="severity-badge severity-{{ bug.severity.toLowerCase() }}">
+              {{ bug.severity }}
+            </span>
+          </td>
+          <td class="status-cell">
+            <span class="status-badge">{{ formatStatus(bug.status) }}</span>
+          </td>
+          <td class="assignee-cell">{{ bug.assignee }}</td>
+          <td class="reported-cell">{{ bug.reported }}</td>
+          <td class="resolved-cell">{{ bug.resolved || 'N/A' }}</td>
+          <td class="action-cell">
+            <div class="action-buttons">
+              <button class="btn-retest" (click)="onRetest(bug)" *ngIf="bug.status !== 'done'">Re-test</button>
+              <button class="btn-pass" (click)="onPass(bug)" *ngIf="bug.status !== 'done'">Pass</button>
+              <button class="btn-reopen" (click)="onReopen(bug)">Reopen</button>
+              <button class="btn-view" (click)="viewComments(bug)">View Comments</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="no-bugs" *ngIf="!loading && !error && myBugs.length === 0">
+    <p>No bugs assigned to you for testing. Great job! 🎉</p>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2>{{ modalType === 'pass' ? 'Pass' : 'Reopen' }} Bug {{ editingBug?.id }}</h2>
+      <form (ngSubmit)="saveChanges()">
+        <div class="form-group">
+          <label>{{ modalType === 'pass' ? 'Verification Comments' : 'Reopen Reason' }}</label>
+          <textarea [(ngModel)]="comments" name="comments" placeholder="Enter details here..." required rows="4"></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="cancel-btn" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="save-btn">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Comments Modal -->
+  <div class="modal" *ngIf="showCommentsModal" (click)="closeCommentsModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2>Comments for {{ editingBug?.id }}</h2>
+      <pre class="comments-text">{{ commentText || 'No comments yet.' }}</pre>
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="closeCommentsModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

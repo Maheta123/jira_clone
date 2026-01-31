@@ -1,0 +1,265 @@
+.ticket-container {
+  max-width: 999px;                /* Wider form – less white space */
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.ticket-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  padding: 40px;
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.card-header h1 {
+  font-size: 2rem;
+  color: #172b4d;
+  margin: 0 0 8px 0;
+}
+
+.subtitle {
+  color: #5e6c84;
+  font-size: 1rem;
+}
+
+/* Form layout */
+.ticket-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;                      /* Nice breathing room between fields */
+}
+
+.form-row {
+  display: flex;
+  gap: 40px;                      /* Better spacing between Org & Name */
+  flex-wrap: wrap;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 280px;
+}
+
+.form-group.full-width {
+  flex: 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d9e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: #0052cc;
+  box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
+}
+
+/* Readonly fields */
+.form-input.readonly {
+  background-color: #f8f9fa;
+  color: #495057;
+  cursor: not-allowed;
+  border-color: #ced4da;
+}
+
+.form-input.readonly:focus {
+  box-shadow: none;
+}
+
+/* Priority buttons */
+.priority-options {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.priority-label {
+  cursor: pointer;
+}
+
+.badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.priority-label.active .badge,
+.badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Messages */
+.messages-container {
+  min-height: 40px;
+  text-align: center;
+}
+
+.error-message {
+  color: #c53030;
+  background: #fee2e2;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.success-message {
+  color: #006644;
+  background: #e3fcef;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+/* Submit */
+.form-actions {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.btn-submit {
+  padding: 14px 40px;
+  background: #0052cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-submit:hover {
+  background: #003eab;
+}
+
+.btn-submit:disabled {
+  background: #a0aec0;
+  cursor: not-allowed;
+}
+
+/* Required asterisk */
+.required {
+  color: #c53030;
+}
+
+/* Error text */
+.error-text {
+  color: #c53030;
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ticket-container {
+    padding: 0 16px;
+    margin: 20px auto;
+  }
+
+  .ticket-card {
+    padding: 24px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+
+.priority-btn {
+  flex: 1;
+  min-width: 100px;
+  padding: 10px 16px;
+  margin: 3px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.priority-btn.active {
+  border-color: #0052cc !important;
+  box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.2);
+  transform: translateY(-1px);
+}
+/* Priority buttons - clean, clickable, modern */
+.priority-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.priority-btn {
+  flex: 1;
+  min-width: 110px;
+  padding: 12px 18px;
+  border: 1px solid #d1d9e0;
+  border-radius: 8px;
+  background: #f8f9fa;
+  color: #495057;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+/* Hover effect */
+.priority-btn:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+  transform: translateY(-1px);
+}
+
+/* Active state - blue highlight */
+.priority-btn.active {
+  background: #0052cc;
+  color: white;
+  border-color: #0052cc;
+  box-shadow: 0 4px 14px rgba(0, 82, 204, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Optional: Keep original colors as subtle background when not active */
+.priority-btn.low    { background: #e6ffed; color: #0e6245; border-color: #b3ffd9; }
+.priority-btn.medium { background: #e6f0ff; color: #004085; border-color: #b3d4ff; }
+.priority-btn.high   { background: #fff0e6; color: #7a3e00; border-color: #ffd9b3; }
+.priority-btn.critical { background: #ffe6e6; color: #a30000; border-color: #ffb3b3; }
+
+/* Active overrides original colors */
+.priority-btn.active.low,
+.priority-btn.active.medium,
+.priority-btn.active.high,
+.priority-btn.active.critical {
+  background: #0052cc !important;
+  color: white !important;
+  border-color: #0052cc !important;
+}

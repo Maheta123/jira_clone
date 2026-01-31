@@ -1,0 +1,157 @@
+<div class="organizations-container">
+  <div class="page-header">
+    <h1 class="page-title">Organizations</h1>
+    <button class="btn-primary" (click)="openAddModal()">
+      <i class="material-icons">add</i> Create New Organization
+    </button>
+  </div>
+
+  <div class="controls-bar">
+    <div class="search-box">
+      <i class="material-icons">search</i>
+      <input
+        type="text"
+        placeholder="Search organizations..."
+        [(ngModel)]="searchTerm"
+        (input)="filterOrganizations()"
+      />
+    </div>
+
+    <select
+      class="filter-select"
+      [(ngModel)]="selectedStatus"
+      (change)="filterOrganizations()"
+    >
+      <option value="All">All Status</option>
+      <option value="active">Active</option>
+      <option value="trial">Trial</option>
+      <option value="suspended">Suspended</option>
+    </select>
+  </div>
+
+  <div class="table-container">
+    <table class="org-table" *ngIf="filteredOrganizations.length > 0; else emptyState">
+      <thead>
+        <tr>
+          <th>Organization</th>
+          <th>Code</th>
+          <th>Domain</th>
+          <th>Users</th>
+          <th>Projects</th>
+          <th>Plan</th>
+          <th>Status</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let org of filteredOrganizations">
+          <td><strong>{{ org.name }}</strong></td>
+          <td><strong>{{ org.code || 'N/A' }}</strong></td>
+          <td>{{ org.domain }}</td>
+          <td>{{ org.users || 0 }}</td>
+          <td>{{ org.projects || 0 }}</td>
+          <td>{{ org.plan }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="org.status">
+              {{ org.status | titlecase }}
+            </span>
+          </td>
+          <td>{{ org.created }}</td>
+          <td class="actions">
+            <button class="action-btn" title="View" (click)="viewOrganization(org)">
+              <i class="material-icons">visibility</i>
+            </button>
+            <button class="action-btn" title="Edit" (click)="openEditModal(org)">
+              <i class="material-icons">edit</i>
+            </button>
+            <button
+              class="action-btn danger"
+              title="Suspend"
+              [disabled]="org.status === 'suspended'"
+              (click)="changeStatus(org, 'suspended')"
+            >
+              <i class="material-icons">block</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <i class="material-icons">business</i>
+        <p>No organizations found</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()"></div>
+
+  <div class="modal" *ngIf="showModal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'Edit Organization' : 'Create New Organization' }}</h2>
+      <button class="close-btn" (click)="closeModal()">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Organization Name <span class="required">*</span></label>
+        <input
+          type="text"
+          [(ngModel)]="currentOrg.name"
+          [class.input-error]="formSubmitted && !currentOrg.name.trim()"
+        />
+        <div class="error-text" *ngIf="formSubmitted && !currentOrg.name.trim()">Required</div>
+      </div>
+
+      <div class="form-group">
+        <label>Company Code</label>
+        <input
+          type="text"
+          [(ngModel)]="currentOrg.code"
+          placeholder="e.g. ACME001"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Domain <span class="required">*</span></label>
+        <input
+          type="text"
+          [(ngModel)]="currentOrg.domain"
+          [class.input-error]="formSubmitted && !currentOrg.domain.trim()"
+        />
+        <div class="error-text" *ngIf="formSubmitted && !currentOrg.domain.trim()">Required</div>
+      </div>
+
+      <div class="form-group">
+        <label>Plan</label>
+        <select [(ngModel)]="currentOrg.plan">
+          <option value="Starter">Starter</option>
+          <option value="Pro">Pro</option>
+          <option value="Enterprise">Enterprise</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Status</label>
+        <select [(ngModel)]="currentOrg.status">
+          <option value="trial">Trial</option>
+          <option value="active">Active</option>
+          <option value="suspended">Suspended</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeModal()">Cancel</button>
+      <button class="btn-primary" (click)="saveOrganization()">
+        {{ isEditMode ? 'Save' : 'Create' }}
+      </button>
+    </div>
+  </div>
+</div>

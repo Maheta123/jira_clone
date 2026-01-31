@@ -1,0 +1,86 @@
+/* src/app/users/project-manager/pm-dashboard/pm-dashboard.component.css */
+.pm-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  color: #172b4d;
+  font-size: 2.4rem;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #5e6c84;
+  margin-bottom: 50px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  margin-bottom: 50px;
+}
+
+.stat-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-card.green {
+  border-left: 6px solid #006644;
+}
+
+.stat-value {
+  font-size: 3.2rem;
+  font-weight: bold;
+  color: #0052cc;
+}
+
+.section {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 40px;
+}
+
+.section h2 {
+  color: #172b4d;
+  border-bottom: 3px solid #0052cc;
+  padding-bottom: 12px;
+  margin-bottom: 25px;
+}
+
+.activity-list {
+  list-style: none;
+  padding: 0;
+}
+
+.activity-list li {
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.activity-list li strong {
+  color: #0052cc;
+}
+
+.time {
+  color: #5e6c84;
+  font-size: 0.9rem;
+  float: right;
+}

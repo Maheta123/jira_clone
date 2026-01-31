@@ -1,0 +1,183 @@
+<div class="global-users-container">
+  <div class="page-header">
+    <h1 class="page-title">Global Users</h1>
+    <button class="btn-primary" (click)="openAddModal()">
+      <i class="material-icons">person_add</i> Add User
+    </button>
+  </div>
+
+  <!-- Loading / Error -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading users...</p>
+  </div>
+
+  <div class="error-message" *ngIf="errorMessage && !isLoading">
+    <p>{{ errorMessage }}</p>
+    <button (click)="loadUsers()" class="retry-btn">Try Again</button>
+  </div>
+
+  <!-- Main content -->
+  <div *ngIf="!isLoading && !errorMessage">
+    <div class="controls-bar">
+      <div class="search-box">
+        <i class="material-icons">search</i>
+        <input 
+          type="text" 
+          placeholder="Search by name, email or organization..." 
+          [(ngModel)]="searchTerm"
+          (input)="filterUsers()" />
+      </div>
+
+      <select 
+        class="filter-select" 
+        [(ngModel)]="selectedStatus" 
+        (change)="filterUsers()">
+        <option value="All">All Status</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+        <option value="suspended">Suspended</option>
+        <option value="invited">Invited</option>
+      </select>
+    </div>
+
+    <div class="table-container">
+      <table class="users-table" *ngIf="filteredUsers.length > 0; else emptyState">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Organization</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Last Active</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let user of filteredUsers">
+            <td class="user-name"><strong>{{ user.name }}</strong></td>
+            <td>{{ user.email }}</td>
+            <td>
+              {{ user.organization || getOrgName(user.companyCode) || user.companyCode }}
+            </td>
+            <td>{{ user.role }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="'status-' + user.status">
+                {{ user.status | titlecase }}
+              </span>
+            </td>
+            <td>{{ user.lastActive }}</td>
+            <td class="actions">
+              <button class="action-btn view" title="View Profile" (click)="viewProfile(user)">
+                <i class="material-icons">visibility</i>
+              </button>
+              <button class="action-btn edit" title="Edit User" (click)="openEditModal(user)">
+                <i class="material-icons">edit</i>
+              </button>
+              <button class="action-btn suspend"
+                      title="Suspend User"
+                      [disabled]="user.status === 'suspended'"
+                      (click)="changeStatus(user, 'suspended')">
+                <i class="material-icons">block</i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ng-template #emptyState>
+        <div class="empty-state">
+          <i class="material-icons">people_outline</i>
+          <p>No users found matching your filters</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()"></div>
+  <div class="modal" *ngIf="showModal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'Edit User' : 'Invite New User' }}</h2>
+      <button class="close-btn" (click)="closeModal()" aria-label="Close modal">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Full Name <span class="required">*</span></label>
+          <input
+            type="text"
+            [(ngModel)]="currentUser.name"
+            placeholder="John Doe"
+            [class.input-error]="formSubmitted && !currentUser.name.trim()" />
+          <div class="error-text" *ngIf="formSubmitted && !currentUser.name.trim()">
+            Required field
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address <span class="required">*</span></label>
+          <input
+            type="email"
+            [(ngModel)]="currentUser.email"
+            placeholder="john.doe@company.com"
+            [class.input-error]="formSubmitted && !currentUser.email.trim()" />
+          <div class="error-text" *ngIf="formSubmitted && !currentUser.email.trim()">
+            Required field
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Organization <span class="required">*</span></label>
+          <select [(ngModel)]="currentUser.companyCode" (change)="onOrgChange()">
+            <option value="" disabled>Select Organization</option>
+            <option *ngFor="let org of organizations" [value]="org.code">
+              {{ org.name }} ({{ org.code }})
+            </option>
+          </select>
+          <div class="error-text" *ngIf="formSubmitted && !currentUser.companyCode.trim()">
+            Required field
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Custom Display Name (optional)</label>
+          <input
+            type="text"
+            [(ngModel)]="currentUser.organization"
+            placeholder="Override display name (optional)" />
+        </div>
+
+        <div class="form-group">
+          <label>Role</label>
+          <select [(ngModel)]="currentUser.role">
+            <option value="Admin">Administrator</option>
+            <option value="ProjectManager">Project Manager</option>
+            <option value="Developer">Developer</option>
+            <option value="QATester">QA Tester</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Account Status</label>
+          <select [(ngModel)]="currentUser.status">
+            <option value="active">Active</option>
+            <option value="invited">Invited</option>
+            <option value="inactive">Inactive</option>
+            <option value="suspended">Suspended</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeModal()">Cancel</button>
+      <button class="btn-primary" (click)="saveUser()">
+        {{ isEditMode ? 'Save Changes' : 'Create & Invite' }}
+      </button>
+    </div>
+  </div>
+</div>

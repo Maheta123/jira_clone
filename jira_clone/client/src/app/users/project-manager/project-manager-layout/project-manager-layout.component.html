@@ -1,0 +1,60 @@
+<!-- project-manager-layout.component.html -->
+<div class="pm-layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Project Manager</h2>
+      
+      <!-- Optional: User info / avatar -->
+      <div class="user-info" *ngIf="currentUser">
+          <a [routerLink]="['/profile']">
+        <div
+          class="user-avatar"
+          *ngIf="currentUser"
+          title="{{ userName }}"
+        >
+          {{ getInitials(userName) }}
+        </div>
+        </a>
+        <div class="user-details">
+          <span class="user-name">{{ userName }}</span>
+          <span class="user-role">Project Manager</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li>
+          <a routerLink="/project-manager/dashboard" routerLinkActive="active">
+            <i class="icon-dashboard"></i> Dashboard
+          </a>
+        </li>
+        <li>
+          <a routerLink="/project-manager/projects" routerLinkActive="active">
+            <i class="icon-projects"></i> My Projects
+          </a>
+        </li>
+        <li>
+          <a routerLink="/project-manager/board" routerLinkActive="active">
+            <i class="icon-board"></i> Task Board
+          </a>
+        </li>
+        <li>
+          <a routerLink="/project-manager/create-task" routerLinkActive="active">
+            <i class="icon-add-task"></i> Create Task
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

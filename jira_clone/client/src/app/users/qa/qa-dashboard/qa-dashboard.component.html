@@ -1,0 +1,95 @@
+<div class="qa-container">
+  <h1>QA Tester Dashboard</h1>
+  <p class="subtitle">Welcome back{{ currentUserName ? ', ' + currentUserName : '' }}! Here's your testing overview</p>
+
+  <div class="loading" *ngIf="loading">Loading your dashboard...</div>
+  <div class="error-message" *ngIf="error">{{ error }}</div>
+
+  <ng-container *ngIf="!loading && !error">
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>My Open Bugs</h3>
+        <p class="stat-value">{{ stats.myOpenBugs }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Tests In Progress</h3>
+        <p class="stat-value">{{ stats.testsInProgress }}</p>
+      </div>
+      <div class="stat-card green">
+        <h3 >Passed This Week</h3>
+        <p class="stat-value">{{ stats.passedToday }}</p>
+      </div>
+      <div class="stat-card red">
+        <h3>Failed/Reopened This Week</h3>
+        <p class="stat-value">{{ stats.failedToday }}</p>
+      </div>
+    </div>
+
+    <!-- My Assigned Issues -->
+    <div class="section">
+      <h2>My Assigned Issues ({{ assignedIssues.length }})</h2>
+      <table class="data-table" *ngIf="assignedIssues.length > 0; else noIssues">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Project</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let issue of assignedIssues">
+            <td>{{ issue.id }}</td>
+            <td>{{ issue.title }}</td>
+            <td>{{ issue.project }}</td>
+            <td>
+              <span class="priority"
+                    [ngClass]="'priority-' + (issue.priority | lowercase)">
+                {{ issue.priority }}
+              </span>
+            </td>
+            <td>{{ issue.status }}</td>
+            <td>
+              <button class="btn-test" 
+                      [disabled]="issue.status === 'Completed'"
+                      (click)="startTesting(issue)">
+                {{ issue.status === 'In Testing' ? 'Continue' : 'Start Testing' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #noIssues>
+        <div class="empty-state">
+          <p>No issues assigned to you right now. Great job!</p>
+          <p><a routerLink="/tasks">Browse all tasks →</a></p>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Recent Test Results -->
+    <div class="section">
+      <h2>Recent Test Results ({{ recentTests.length }})</h2>
+      <div class="test-results-grid" *ngIf="recentTests.length > 0; else noTests">
+        <div class="test-result-item" *ngFor="let test of recentTests">
+          <div class="test-info">
+            <div class="test-case">{{ test.testCase }}</div>
+            <div class="test-date">{{ test.date }}</div>
+          </div>
+          <div class="test-status">
+            <span class="result-badge"
+                  [ngClass]="'result-' + (test.result | lowercase)">
+              {{ test.result }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <ng-template #noTests>
+        <p class="empty-state">No recent test activity found. Start testing above!</p>
+      </ng-template>
+    </div>
+  </ng-container>
+</div>

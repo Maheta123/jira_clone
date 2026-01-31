@@ -1,0 +1,631 @@
+/* ========================================
+   PROFILE PAGE - ENHANCED DESIGN
+   ======================================== */
+
+/* Reset & Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+
+nav.navbar{
+ display: none !important;
+}
+.profile-page {
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+/* Main Card Container */
+.profile-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   HEADER SECTION
+   ======================================== */
+
+.profile-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3rem 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.profile-header::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: -5%;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Avatar Section */
+.avatar-container {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+.avatar-img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 6px solid rgba(255, 255, 255, 0.3);
+  object-fit: cover;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.avatar-container:hover .avatar-img {
+  transform: scale(1.05);
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+}
+
+.avatar-container:hover .avatar-overlay {
+  opacity: 1;
+}
+
+.btn-upload {
+  background: white;
+  color: #667eea;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-upload:hover {
+  transform: scale(1.05);
+  background: #f8f9fa;
+}
+
+/* Header Info */
+.header-info {
+  flex: 1;
+  z-index: 1;
+}
+
+.profile-name {
+  margin: 0 0 0.8rem 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.role-tag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.email {
+  margin: 0.5rem 0 0 0;
+  font-size: 1.1rem;
+  opacity: 0.95;
+  font-weight: 400;
+}
+
+/* ========================================
+   LOADING & ERROR STATES
+   ======================================== */
+
+.loading,
+.error {
+  text-align: center;
+  padding: 3rem 2rem;
+  font-size: 1.1rem;
+}
+
+.loading {
+  color: #667eea;
+  font-weight: 500;
+}
+
+.loading::after {
+  content: '...';
+  animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+  0%, 20% { content: '.'; }
+  40% { content: '..'; }
+  60%, 100% { content: '...'; }
+}
+
+.error {
+  color: #dc3545;
+  background: #ffe6e6;
+  border-radius: 12px;
+  margin: 2rem;
+  font-weight: 500;
+}
+
+/* ========================================
+   PROFILE BODY
+   ======================================== */
+
+.profile-body {
+  padding: 3rem 2.5rem;
+}
+
+/* Info Grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.info-card {
+  background: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.card-title {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2c3e50;
+  padding-bottom: 0.8rem;
+  border-bottom: 3px solid #667eea;
+  display: inline-block;
+}
+
+/* Info Fields */
+.field {
+  margin-bottom: 1.5rem;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.field label {
+  display: block;
+  font-weight: 600;
+  color: #5a6c7d;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.field span {
+  display: block;
+  font-size: 1.1rem;
+  color: #2c3e50;
+  font-weight: 500;
+  padding: 0.5rem 0;
+}
+
+.field input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+
+.status-badge.active {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status-badge.inactive {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.status-badge.pending {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+/* Role Value */
+.role-value {
+  color: #667eea !important;
+  font-weight: 600 !important;
+}
+
+/* ========================================
+   ROLE SECTION
+   ======================================== */
+
+.role-section {
+  margin-top: 2.5rem;
+  animation: slideIn 0.5s ease-out 0.3s both;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.role-section h3 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+}
+
+.role-info-card {
+  background: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%);
+  padding: 2rem;
+  border-radius: 16px;
+  border-left: 6px solid #667eea;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.1);
+}
+
+.role-info-card p {
+  margin: 0 0 1.2rem;
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.role-info-card ul {
+  padding-left: 1.5rem;
+  margin: 0;
+  color: #5a6c7d;
+  line-height: 1.8;
+}
+
+.role-info-card li {
+  margin-bottom: 0.6rem;
+  font-size: 1.05rem;
+  position: relative;
+}
+
+.role-info-card li::marker {
+  color: #667eea;
+  font-weight: bold;
+}
+
+/* ========================================
+   ACTION BUTTONS
+   ======================================== */
+
+.action-buttons {
+  margin-top: 3rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+button {
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+button i.material-icons {
+  font-size: 1.2rem;
+}
+
+.btn-edit {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+}
+
+.btn-cancel {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  color: white;
+}
+
+.btn-logout {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 992px) {
+  .profile-page {
+    padding: 2rem 1.5rem;
+  }
+
+  .profile-header {
+    padding: 2.5rem 2rem;
+  }
+
+  .profile-name {
+    font-size: 2rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 1.5rem 1rem;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .avatar-img {
+    width: 140px;
+    height: 140px;
+  }
+
+  .profile-name {
+    font-size: 1.8rem;
+  }
+
+  .profile-body {
+    padding: 2rem 1.5rem;
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-header {
+    padding: 1.5rem 1rem;
+  }
+
+  .profile-name {
+    font-size: 1.5rem;
+  }
+
+  .role-tag {
+    font-size: 0.85rem;
+    padding: 6px 14px;
+  }
+
+  .avatar-img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .info-card {
+    padding: 1.5rem;
+  }
+
+  button {
+    padding: 12px 20px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY & UTILITIES
+   ======================================== */
+
+/* Focus visible for keyboard navigation */
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Print styles */
+@media print {
+  .profile-page {
+    background: white;
+  }
+
+  .action-buttons,
+  .avatar-overlay {
+    display: none !important;
+  }
+
+  .profile-card {
+    box-shadow: none;
+  }
+  
+ .close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;               /* This forces it to the right side */
+  z-index: 1000;             /* High z-index to stay on top of everything */
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px); /* nicer glass effect */
+}
+
+.close-btn:hover {
+  background: rgba(0, 0, 0, 0.85);
+  transform: scale(1.12) rotate(90deg); /* Fun rotation on hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.close-btn:active {
+  transform: scale(0.92);
+  transition: all 0.1s ease;
+}
+
+.close-btn i {
+  font-size: 1.9rem;
+  transition: transform 0.3s ease;
+}
+
+/* Optional: Make icon rotate slightly on hover too */
+.close-btn:hover i {
+  transform: rotate(90deg);
+}
+
+/* Focus state for accessibility */
+.close-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.4);
+}
+
+/* Make sure profile-card has relative positioning */
+.profile-card {
+  position: relative;
+  /* ... your existing styles ... */
+}
+
+/* Optional: full-screen feel on profile */
+.profile-page {
+  min-height: 100vh;
+  background: #f8f9fa;
+  padding: 2rem;
+}
+}

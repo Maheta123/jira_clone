@@ -1,0 +1,147 @@
+/* Hide public top navbar */
+nav.navbar {
+  display: none !important;
+}
+
+.qa-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  background: #172b4d;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  
+}
+
+.sidebar-header {
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  background: #0052cc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.initials {
+  color: white;
+}
+
+.user-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.user-info .role {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 20px 0;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.sidebar-nav .icon {
+  margin-right: 12px;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* You can use font-awesome or your own icons */
+.icon-dashboard::before { content: "🏠"; }
+.icon-bugs::before     { content: "🐞"; }
+.icon-report::before   { content: "📝"; }
+.icon-test::before     { content: "🧪"; }
+.icon-logout::before   { content: "🚪"; }
+
+.sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: white;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.2s;
+}
+
+.logout-btn:hover {
+  background: rgba(255,68,68,0.2);
+}
+
+.main-content {
+  margin-left: 260px;
+  flex: 1;
+  background: #f4f5f7;
+  padding: 32px;
+  min-height: 100vh;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 220px;
+  }
+  .main-content {
+    margin-left: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .main-content {
+    margin-left: 0;
+  }
+}
